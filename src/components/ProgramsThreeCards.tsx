@@ -37,7 +37,7 @@ const programsData = [
     title: 'Fianarana Mpiandry sy Mpiomana',
     description: 'Formation pour les bergers et prédicateurs, développant les compétences pastorales et théologiques.',
     schedule: 'Mardis, samedis et 3e dimanche',
-    image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+    image: 'https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/object/public/document-uploads/1756283388175-v2ax5zj598.jpg',
     details: {
       target: 'Leaders spirituels et futurs bergers',
       topics: 'Théologie, homilétique, counseling pastoral, administration',
