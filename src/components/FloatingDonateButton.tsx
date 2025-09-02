@@ -1,13 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { HandHeart, CircleX } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { HandHeart, CircleX, ArrowRight } from "lucide-react";
 import { toast } from "sonner";
 
 interface FloatingDonateButtonProps {
@@ -79,7 +73,9 @@ export default function FloatingDonateButton({
       // Simulate API call
       await new Promise(resolve => setTimeout(resolve, 2000));
       
-      toast.success(`Merci pour votre don de ${amount}€ !`);
+      toast.success(`Merci pour votre don de ${amount}€ !`, {
+        description: 'Votre générosité aide notre communauté à grandir.'
+      });
       closeModal();
     } catch (error) {
       toast.error("Une erreur est survenue. Veuillez réessayer.");
@@ -124,202 +120,173 @@ export default function FloatingDonateButton({
   return (
     <>
       {/* Floating Button */}
-      <motion.div
-        className={`fixed bottom-4 right-4 ${className}`}
+      <div
+        className={`fixed bottom-6 right-6 ${className}`}
         style={{ zIndex }}
-        initial={{ scale: 0, opacity: 0 }}
-        animate={{ scale: shouldAnimate ? 1 : 0.8, opacity: 1 }}
-        transition={{ 
-          type: "spring", 
-          stiffness: 300, 
-          damping: 25,
-          delay: shouldAnimate ? 0 : 0.5
-        }}
       >
-        <motion.button
+        <button
           onClick={handlePrimaryClick}
           onContextMenu={(e) => {
             e.preventDefault();
             handleLongPress();
           }}
-          className="group relative flex items-center gap-2 px-3 py-3 sm:px-4 sm:py-4 
-                     backdrop-blur-md bg-white/10 border border-white/20 rounded-full
-                     shadow-lg hover:shadow-xl transition-all duration-300 ease-in-out
+          className="group relative flex items-center gap-3 px-6 py-4 
+                     bg-gradient-to-r from-purple-600 via-blue-600 to-indigo-600
+                     text-white font-semibold rounded-2xl
+                     shadow-xl hover:shadow-2xl hover:shadow-purple-500/25
+                     transition-all duration-300 ease-in-out
                      hover:scale-110 focus:scale-110 focus:outline-none focus:ring-2 
-                     focus:ring-primary/50 focus:ring-offset-2 scale-90 sm:scale-100"
+                     focus:ring-purple-500/50 focus:ring-offset-2 
+                     backdrop-blur-sm border border-white/10"
           aria-label="Faire un don - Cliquez pour accéder à la section donation ou maintenez enfoncé pour ouvrir le formulaire rapide"
           aria-controls={isModalOpen ? "donation-modal" : undefined}
-          whileHover={{ scale: 1.1 }}
-          whileTap={{ scale: 0.95 }}
         >
-          {/* Pulse animation */}
-          <motion.div
-            className="absolute inset-0 rounded-full bg-primary/20"
-            animate={{
-              scale: [1, 1.1, 1],
-              opacity: [0.7, 0.3, 0.7]
-            }}
-            transition={{
-              duration: 2,
-              repeat: Infinity,
-              ease: "easeInOut"
-            }}
-            style={{
-              animationPlayState: window.matchMedia('(prefers-reduced-motion: reduce)').matches 
-                ? 'paused' 
-                : 'running'
-            }}
-          />
+          {/* Pulse animation ring */}
+          <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-purple-600 via-blue-600 to-indigo-600 animate-ping opacity-20" />
 
           {/* Heart Icon */}
           <HandHeart 
-            className="w-5 h-5 sm:w-6 sm:h-6 text-[#8B5CF6] relative z-10" 
+            className="w-5 h-5 text-white relative z-10 group-hover:animate-pulse" 
             strokeWidth={2}
           />
 
           {/* Text */}
-          <span className="text-sm sm:text-base font-medium text-primary uppercase tracking-wide relative z-10">
-            FAIRE UN DON
+          <span className="text-sm font-bold text-white uppercase tracking-wider relative z-10">
+            Faire un Don
           </span>
-        </motion.button>
-      </motion.div>
+
+          {/* Arrow */}
+          <ArrowRight className="w-4 h-4 text-white relative z-10 group-hover:translate-x-1 transition-transform duration-300" />
+        </button>
+      </div>
 
       {/* Donation Modal */}
-      <AnimatePresence>
-        {isModalOpen && (
-          <motion.div
-            className="fixed inset-0 z-[60] flex items-center justify-center p-4"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
+      {isModalOpen && (
+        <div className="fixed inset-0 z-[60] flex items-center justify-center p-4">
+          {/* Backdrop */}
+          <div
+            className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+            onClick={closeModal}
+          />
+
+          {/* Modal Content */}
+          <div
+            data-modal
+            id="donation-modal"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="modal-title"
+            className="relative w-full max-w-md bg-white/95 backdrop-blur-sm border border-white/20 rounded-2xl shadow-2xl p-8 animate-fadeInUp"
           >
-            {/* Backdrop */}
-            <motion.div
-              className="absolute inset-0 backdrop-blur-sm bg-black/50"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              onClick={closeModal}
-            />
+            {/* Header */}
+            <div className="flex items-center justify-between mb-8">
+              <div className="flex items-center gap-3">
+                <div className="p-2 bg-gradient-to-r from-purple-100 to-blue-100 rounded-xl">
+                  <HandHeart className="w-6 h-6 text-purple-600" />
+                </div>
+                <h2 id="modal-title" className="text-2xl font-bold text-gray-900">
+                  Faire un Don
+                </h2>
+              </div>
+              <button
+                onClick={closeModal}
+                className="p-2 hover:bg-gray-100 rounded-xl transition-colors duration-200"
+                aria-label="Fermer le formulaire de don"
+              >
+                <CircleX className="w-5 h-5 text-gray-500" />
+              </button>
+            </div>
 
-            {/* Modal Content */}
-            <motion.div
-              data-modal
-              id="donation-modal"
-              role="dialog"
-              aria-modal="true"
-              aria-labelledby="modal-title"
-              className="relative w-full max-w-md"
-              initial={{ scale: 0.9, opacity: 0, y: 20 }}
-              animate={{ scale: 1, opacity: 1, y: 0 }}
-              exit={{ scale: 0.9, opacity: 0, y: 20 }}
-              transition={{ type: "spring", stiffness: 300, damping: 25 }}
-            >
-              <Card className="backdrop-blur-md bg-white/95 border border-white/30 shadow-2xl">
-                <CardHeader className="relative pb-4">
-                  <div className="flex items-center justify-between">
-                    <CardTitle id="modal-title" className="text-xl font-heading text-primary flex items-center gap-2">
-                      <HandHeart className="w-5 h-5 text-[#8B5CF6]" />
-                      Faire un don
-                    </CardTitle>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={closeModal}
-                      className="h-8 w-8 p-0 hover:bg-muted/50"
-                      aria-label="Fermer le formulaire de don"
+            <form onSubmit={handleDonationSubmit} className="space-y-6">
+              {/* Quick Amounts */}
+              <div className="space-y-3">
+                <label className="block text-sm font-semibold text-gray-700">
+                  Montant suggéré
+                </label>
+                <div className="grid grid-cols-4 gap-3">
+                  {quickAmounts.map((amount) => (
+                    <button
+                      key={amount}
+                      type="button"
+                      onClick={() => {
+                        setSelectedAmount(amount);
+                        setCustomAmount("");
+                      }}
+                      className={`px-4 py-3 rounded-xl font-semibold transition-all duration-300 hover:scale-105 ${
+                        selectedAmount === amount
+                          ? 'bg-gradient-to-r from-purple-600 to-blue-600 text-white shadow-lg'
+                          : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                      }`}
                     >
-                      <CircleX className="w-4 h-4" />
-                    </Button>
-                  </div>
-                </CardHeader>
+                      {amount}€
+                    </button>
+                  ))}
+                </div>
+              </div>
 
-                <CardContent>
-                  <form onSubmit={handleDonationSubmit} className="space-y-6">
-                    {/* Quick Amounts */}
-                    <div className="space-y-3">
-                      <Label className="text-sm font-medium text-foreground">
-                        Montant suggéré
-                      </Label>
-                      <div className="grid grid-cols-4 gap-2">
-                        {quickAmounts.map((amount) => (
-                          <Button
-                            key={amount}
-                            type="button"
-                            variant={selectedAmount === amount ? "default" : "outline"}
-                            size="sm"
-                            onClick={() => {
-                              setSelectedAmount(amount);
-                              setCustomAmount("");
-                            }}
-                            className="text-sm"
-                          >
-                            {amount}€
-                          </Button>
-                        ))}
-                      </div>
-                    </div>
+              {/* Custom Amount */}
+              <div className="space-y-2">
+                <label htmlFor="custom-amount" className="block text-sm font-semibold text-gray-700">
+                  Ou montant personnalisé
+                </label>
+                <input
+                  id="custom-amount"
+                  type="number"
+                  placeholder="Montant en €"
+                  value={customAmount}
+                  onChange={(e) => {
+                    setCustomAmount(e.target.value);
+                    setSelectedAmount(""); 
+                  }}
+                  className="w-full px-4 py-3 bg-white/50 border border-gray-200 rounded-xl transition-all duration-300 focus:ring-2 focus:ring-purple-500 focus:border-transparent placeholder-gray-400"
+                  min="1"
+                  step="1"
+                />
+              </div>
 
-                    {/* Custom Amount */}
-                    <div className="space-y-2">
-                      <Label htmlFor="custom-amount" className="text-sm font-medium text-foreground">
-                        Ou montant personnalisé
-                      </Label>
-                      <Input
-                        id="custom-amount"
-                        type="number"
-                        placeholder="0"
-                        value={customAmount}
-                        onChange={(e) => {
-                          setCustomAmount(e.target.value);
-                          setSelectedAmount(""); 
-                        }}
-                        className="text-right"
-                        min="1"
-                        step="1"
-                      />
-                    </div>
-
-                    {/* Payment Method */}
-                    <div className="space-y-3">
-                      <Label className="text-sm font-medium text-foreground">
-                        Mode de paiement
-                      </Label>
-                      <RadioGroup 
-                        value={paymentMethod} 
-                        onValueChange={setPaymentMethod}
-                        className="grid grid-cols-2 gap-4"
-                      >
-                        <div className="flex items-center space-x-2">
-                          <RadioGroupItem value="card" id="card" />
-                          <Label htmlFor="card" className="text-sm">Carte bancaire</Label>
-                        </div>
-                        <div className="flex items-center space-x-2">
-                          <RadioGroupItem value="paypal" id="paypal" />
-                          <Label htmlFor="paypal" className="text-sm">PayPal</Label>
-                        </div>
-                      </RadioGroup>
-                    </div>
-
-                    {/* Submit Button */}
-                    <Button
-                      type="submit"
-                      className="w-full bg-[#8B5CF6] hover:bg-[#7C3AED] text-white"
-                      disabled={isSubmitting || (!selectedAmount && !customAmount)}
+              {/* Payment Method */}
+              <div className="space-y-3">
+                <label className="block text-sm font-semibold text-gray-700">
+                  Mode de paiement
+                </label>
+                <div className="grid grid-cols-2 gap-3">
+                  {[
+                    { value: "card", label: "Carte bancaire" },
+                    { value: "paypal", label: "PayPal" }
+                  ].map((method) => (
+                    <button
+                      key={method.value}
+                      type="button"
+                      onClick={() => setPaymentMethod(method.value)}
+                      className={`p-3 rounded-xl font-medium transition-all duration-300 hover:scale-105 ${
+                        paymentMethod === method.value
+                          ? 'bg-gradient-to-r from-purple-600 to-blue-600 text-white shadow-lg'
+                          : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                      }`}
                     >
-                      {isSubmitting ? "Traitement..." : `Donner ${selectedAmount || customAmount || '0'}€`}
-                    </Button>
+                      {method.label}
+                    </button>
+                  ))}
+                </div>
+              </div>
 
-                    <p className="text-xs text-muted-foreground text-center">
-                      Vos données sont sécurisées et ne seront pas partagées.
-                    </p>
-                  </form>
-                </CardContent>
-              </Card>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+              {/* Submit Button */}
+              <button
+                type="submit"
+                className="w-full bg-gradient-to-r from-purple-600 via-blue-600 to-indigo-600 text-white font-bold py-4 rounded-2xl hover:shadow-2xl hover:shadow-purple-500/25 transition-all duration-300 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+                disabled={isSubmitting || (!selectedAmount && !customAmount)}
+              >
+                {isSubmitting ? "Traitement en cours..." : `Donner ${selectedAmount || customAmount || '0'}€`}
+              </button>
+
+              <p className="text-xs text-gray-500 text-center leading-relaxed">
+                Vos données sont sécurisées et ne seront pas partagées.<br />
+                Merci pour votre générosité envers notre communauté.
+              </p>
+            </form>
+          </div>
+        </div>
+      )}
     </>
   );
 }

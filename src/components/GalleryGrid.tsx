@@ -1,15 +1,12 @@
 "use client";
 
 import { useState, useCallback, useRef, useEffect } from 'react';
-import { X, ChevronLeft, ChevronRight, ZoomIn, Grid3x2, Images } from 'lucide-react';
-import { Card } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
+import { X, ChevronLeft, ChevronRight, ZoomIn, Images } from 'lucide-react';
 
 interface GalleryImage {
   id: string;
   src: string;
   alt: string;
-  caption?: string;
   width?: number;
   height?: number;
 }
@@ -22,51 +19,33 @@ interface GalleryGridProps {
 const defaultImages: GalleryImage[] = [
   {
     id: '1',
-    src: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&h=600&fit=crop',
-    alt: 'Église dans un paysage verdoyant',
-    caption: 'Ny niorenany : 4 lieux depuis 2018'
+    src: 'https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/object/public/document-uploads/1756283865599-pzldiz4tafo.jpg',
+    alt: 'Pasteur prêchant dans l\'église',
   },
   {
     id: '2',
-    src: 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=800&h=600&fit=crop',
-    alt: 'Cérémonie religieuse communautaire',
-    caption: 'Sampana FEFI et Fanantenana'
+    src: 'https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/object/public/document-uploads/1756283865599-pzldiz4tafo.jpg',
+    alt: 'Moment de culte communautaire',
   },
   {
     id: '3',
-    src: 'https://images.unsplash.com/photo-1520637836862-4d197d17c55a?w=800&h=600&fit=crop',
-    alt: 'Communauté en prière',
-    caption: 'Fiangonana sy ny fivorian-bahoaka'
+    src: 'https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/object/public/document-uploads/1756283865599-pzldiz4tafo.jpg',
+    alt: 'Assemblée en prière',
   },
   {
     id: '4',
-    src: 'https://images.unsplash.com/photo-1581833971358-2c8b550f87b3?w=800&h=600&fit=crop',
-    alt: 'Architecture de l\'église moderne',
-    caption: 'Fanorenana vaovao ho an\'ny fiangonana'
+    src: 'https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/object/public/document-uploads/1756283865599-pzldiz4tafo.jpg',
+    alt: 'Service religieux du dimanche',
   },
   {
     id: '5',
-    src: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=600&fit=crop',
-    alt: 'Service religieux du dimanche',
-    caption: 'Fanompoam-pivavahana alahady'
+    src: 'https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/object/public/document-uploads/1756283865599-pzldiz4tafo.jpg',
+    alt: 'Communauté de foi rassemblée',
   },
   {
     id: '6',
-    src: 'https://images.unsplash.com/photo-1549298916-b41d501d3772?w=800&h=600&fit=crop',
-    alt: 'Groupe de jeunes de l\'église',
-    caption: 'Sampana tanora sy fampandrosoana'
-  },
-  {
-    id: '7',
-    src: 'https://images.unsplash.com/photo-1511632765486-a01980e01a18?w=800&h=600&fit=crop',
-    alt: 'Événement caritatif de la communauté',
-    caption: 'Asa soa sy fanampiana'
-  },
-  {
-    id: '8',
-    src: 'https://images.unsplash.com/photo-1438032005730-c779502df39b?w=800&h=600&fit=crop',
-    alt: 'Baptême dans la rivière',
-    caption: 'Batisa sy fanekena finoana'
+    src: 'https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/object/public/document-uploads/1756283865599-pzldiz4tafo.jpg',
+    alt: 'Moment de louange et d\'adoration',
   }
 ];
 
@@ -111,7 +90,7 @@ export default function GalleryGrid({ images = defaultImages, className = '' }: 
   }, [selectedImageIndex, visibleImages.length]);
 
   const loadMoreImages = useCallback(() => {
-    const newCount = Math.min(visibleCount + 4, images.length);
+    const newCount = Math.min(visibleCount + 3, images.length);
     setVisibleCount(newCount);
   }, [visibleCount, images.length]);
 
@@ -173,27 +152,33 @@ export default function GalleryGrid({ images = defaultImages, className = '' }: 
 
   return (
     <>
-      <section id="gallery" className={`py-16 sm:py-20 lg:py-24 ${className}`}>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          {/* Section Header */}
-          <div className="text-center mb-12">
-            <div className="flex items-center justify-center gap-3 mb-4">
-              <Images className="h-8 w-8 text-primary" />
-              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-heading font-bold text-foreground">
-                Galerie
-              </h2>
+      <section className={`relative py-24 sm:py-32 lg:py-40 ${className}`}>
+        {/* Background with subtle gradient */}
+        <div className="absolute inset-0 bg-gradient-to-br from-purple-50/30 via-blue-50/20 to-indigo-50/30 rounded-3xl" />
+        
+        <div className="relative max-w-6xl mx-auto px-6 sm:px-8 lg:px-12">
+          {/* Header */}
+          <div className="text-center mb-16 sm:mb-20 lg:mb-24">
+            <div className="inline-flex items-center justify-center p-3 bg-gradient-to-r from-purple-100 to-blue-100 rounded-full mb-6 animate-fadeInUp">
+              <Images className="h-8 w-8 text-purple-600" />
             </div>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Découvrez les moments forts de notre communauté à travers nos activités et événements
+            <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900 mb-6 animate-fadeInUp animate-delay-100">
+              Notre
+              <span className="block bg-gradient-to-r from-purple-600 via-blue-600 to-indigo-600 bg-clip-text text-transparent">
+                Galerie
+              </span>
+            </h2>
+            <p className="text-xl sm:text-2xl text-gray-600 max-w-3xl mx-auto leading-relaxed animate-fadeInUp animate-delay-200">
+              Découvrez les moments forts de notre communauté à travers nos célébrations et rassemblements
             </p>
           </div>
 
           {/* Gallery Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-4 mb-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 lg:gap-10 mb-12 animate-fadeInUp animate-delay-300">
             {visibleImages.map((image, index) => (
-              <Card
+              <div
                 key={image.id}
-                className="group overflow-hidden rounded-lg bg-white/60 backdrop-blur-sm border border-white/20 hover:bg-white/80 transition-all duration-300 cursor-pointer"
+                className="group relative overflow-hidden rounded-2xl bg-white/60 backdrop-blur-sm border border-white/20 hover:bg-white/80 transition-all duration-500 cursor-pointer hover:scale-105 hover:shadow-2xl"
                 onClick={() => openLightbox(index)}
                 onKeyDown={(e) => {
                   if (e.key === 'Enter' || e.key === ' ') {
@@ -205,13 +190,11 @@ export default function GalleryGrid({ images = defaultImages, className = '' }: 
                 role="button"
                 aria-label={`Ouvrir l'image: ${image.alt}`}
               >
-                <div className={`relative overflow-hidden ${
-                  index < 2 ? 'h-48 sm:h-64 lg:h-80' : 'h-48 sm:h-64 lg:h-80'
-                } ${index === 0 ? 'aspect-square sm:aspect-auto' : ''}`}>
+                <div className="relative aspect-[4/3] overflow-hidden">
                   {/* Image Skeleton */}
                   {!imagesLoaded.has(image.id) && (
-                    <div className="absolute inset-0 bg-muted animate-pulse flex items-center justify-center">
-                      <Grid3x2 className="h-8 w-8 text-muted-foreground" />
+                    <div className="absolute inset-0 bg-gradient-to-br from-gray-100 to-gray-200 animate-pulse flex items-center justify-center">
+                      <Images className="h-12 w-12 text-gray-400" />
                     </div>
                   )}
                   
@@ -220,7 +203,7 @@ export default function GalleryGrid({ images = defaultImages, className = '' }: 
                     src={image.src}
                     alt={image.alt}
                     loading="lazy"
-                    className={`w-full h-full object-cover transition-all duration-300 group-hover:scale-105 ${
+                    className={`w-full h-full object-cover transition-all duration-700 group-hover:scale-110 ${
                       imagesLoaded.has(image.id) ? 'opacity-100' : 'opacity-0'
                     }`}
                     onLoad={() => handleImageLoad(image.id)}
@@ -228,36 +211,30 @@ export default function GalleryGrid({ images = defaultImages, className = '' }: 
                     height={image.height || 600}
                   />
 
-                  {/* Hover Overlay */}
-                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all duration-300 flex items-center justify-center">
-                    <ZoomIn className="h-8 w-8 text-white opacity-0 group-hover:opacity-100 transition-all duration-300 transform scale-75 group-hover:scale-100" />
+                  {/* Gradient overlay */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-all duration-500" />
+
+                  {/* Zoom icon */}
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <div className="p-3 bg-white/20 backdrop-blur-sm rounded-full opacity-0 group-hover:opacity-100 transform scale-75 group-hover:scale-100 transition-all duration-300">
+                      <ZoomIn className="h-6 w-6 text-white" />
+                    </div>
                   </div>
                 </div>
-
-                {/* Caption */}
-                {image.caption && (
-                  <div className="p-3 sm:p-4">
-                    <p className="text-sm font-medium text-foreground leading-tight">
-                      {image.caption}
-                    </p>
-                  </div>
-                )}
-              </Card>
+              </div>
             ))}
           </div>
 
           {/* Load More Button */}
           {hasMoreImages && (
-            <div className="text-center">
-              <Button
+            <div className="text-center animate-fadeInUp animate-delay-400">
+              <button
                 onClick={loadMoreImages}
-                variant="outline"
-                size="lg"
-                className="bg-white/60 backdrop-blur-sm border-white/20 hover:bg-white/80"
+                className="group inline-flex items-center gap-3 px-8 py-4 bg-white/60 backdrop-blur-sm border border-white/20 rounded-2xl hover:bg-white/80 transition-all duration-300 hover:scale-105 hover:shadow-xl text-gray-700 font-medium"
               >
-                Charger plus d'images
-                <Grid3x2 className="ml-2 h-4 w-4" />
-              </Button>
+                Voir plus d'images
+                <Images className="h-5 w-5 group-hover:scale-110 transition-transform duration-300" />
+              </button>
             </div>
           )}
         </div>
@@ -266,12 +243,11 @@ export default function GalleryGrid({ images = defaultImages, className = '' }: 
       {/* Lightbox Modal */}
       {selectedImageIndex !== null && (
         <div
-          className="fixed inset-0 z-50 bg-black/90 backdrop-blur-sm flex items-center justify-center p-4"
+          className="fixed inset-0 z-50 bg-black/95 backdrop-blur-sm flex items-center justify-center p-4"
           ref={lightboxRef}
           role="dialog"
           aria-modal="true"
           aria-labelledby="lightbox-title"
-          aria-describedby="lightbox-description"
           onClick={(e) => {
             if (e.target === e.currentTarget) {
               closeLightbox();
@@ -279,39 +255,33 @@ export default function GalleryGrid({ images = defaultImages, className = '' }: 
           }}
         >
           {/* Navigation Controls */}
-          <div className="absolute top-4 right-4 z-10">
-            <Button
-              variant="ghost"
-              size="icon"
+          <div className="absolute top-6 right-6 z-10">
+            <button
               onClick={closeLightbox}
-              className="bg-black/20 hover:bg-black/40 text-white border-white/20"
+              className="p-3 bg-white/10 hover:bg-white/20 text-white border border-white/20 rounded-full backdrop-blur-sm transition-all duration-300 hover:scale-110"
               aria-label="Fermer la galerie"
             >
               <X className="h-6 w-6" />
-            </Button>
+            </button>
           </div>
 
           {visibleImages.length > 1 && (
             <>
-              <Button
-                variant="ghost"
-                size="icon"
+              <button
                 onClick={() => navigateLightbox('prev')}
-                className="absolute left-4 top-1/2 -translate-y-1/2 bg-black/20 hover:bg-black/40 text-white border-white/20 z-10"
+                className="absolute left-6 top-1/2 -translate-y-1/2 p-3 bg-white/10 hover:bg-white/20 text-white border border-white/20 rounded-full backdrop-blur-sm transition-all duration-300 hover:scale-110 z-10"
                 aria-label="Image précédente"
               >
                 <ChevronLeft className="h-6 w-6" />
-              </Button>
+              </button>
 
-              <Button
-                variant="ghost"
-                size="icon"
+              <button
                 onClick={() => navigateLightbox('next')}
-                className="absolute right-4 top-1/2 -translate-y-1/2 bg-black/20 hover:bg-black/40 text-white border-white/20 z-10"
+                className="absolute right-6 top-1/2 -translate-y-1/2 p-3 bg-white/10 hover:bg-white/20 text-white border border-white/20 rounded-full backdrop-blur-sm transition-all duration-300 hover:scale-110 z-10"
                 aria-label="Image suivante"
               >
                 <ChevronRight className="h-6 w-6" />
-              </Button>
+              </button>
             </>
           )}
 
@@ -320,25 +290,13 @@ export default function GalleryGrid({ images = defaultImages, className = '' }: 
             <img
               src={visibleImages[selectedImageIndex].src}
               alt={visibleImages[selectedImageIndex].alt}
-              className="max-w-full max-h-[80vh] object-contain rounded-lg"
+              className="max-w-full max-h-[85vh] object-contain rounded-2xl shadow-2xl"
               id="lightbox-image"
             />
-            
-            {/* Caption in Lightbox */}
-            {visibleImages[selectedImageIndex].caption && (
-              <div className="mt-4 p-4 bg-black/20 backdrop-blur-sm rounded-lg border border-white/20 max-w-2xl">
-                <p
-                  className="text-white text-center font-medium"
-                  id="lightbox-description"
-                >
-                  {visibleImages[selectedImageIndex].caption}
-                </p>
-              </div>
-            )}
 
             {/* Image Counter */}
             {visibleImages.length > 1 && (
-              <div className="mt-4 px-3 py-1 bg-black/20 backdrop-blur-sm rounded-full border border-white/20">
+              <div className="mt-6 px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full border border-white/20">
                 <span className="text-white text-sm font-medium">
                   {selectedImageIndex + 1} / {visibleImages.length}
                 </span>

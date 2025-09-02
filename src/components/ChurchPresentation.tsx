@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Church, Presentation, X } from "lucide-react";
+import { Church, Presentation, X, Users, Calendar, Heart } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 
@@ -20,6 +20,12 @@ export default function ChurchPresentation({ className = "" }: ChurchPresentatio
     { name: "Mpampianatra (Catéchisme)", icon: Presentation },
     { name: "Dinika (Étude biblique)", icon: Church },
     { name: "Asam-pifohazana (Réveil)", icon: Church }
+  ];
+
+  const stats = [
+    { number: "2018", label: "Année de fondation", icon: Calendar },
+    { number: "300+", label: "Membres actifs", icon: Users },
+    { number: "2023", label: "Rejointe FPVM", icon: Heart }
   ];
 
   const handleImageLoad = () => {
@@ -42,123 +48,151 @@ export default function ChurchPresentation({ className = "" }: ChurchPresentatio
   return (
     <section 
       id="presentation" 
-      className={`py-16 sm:py-24 ${className}`}
+      className={`py-20 sm:py-32 ${className}`}
       role="region"
       aria-labelledby="presentation-title"
     >
       <div className="container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-12">
+        {/* Section Header */}
+        <div className="text-center mb-20 space-y-6">
+          <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-primary/10 mb-6">
+            <Church className="h-8 w-8 text-primary" />
+          </div>
           <h2 
             id="presentation-title"
-            className="font-heading text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground mb-4"
+            className="font-heading text-4xl sm:text-5xl lg:text-6xl font-bold text-foreground mb-6 leading-tight"
           >
             Notre Église
           </h2>
-          <p className="text-base md:text-lg text-muted-foreground max-w-2xl mx-auto">
-            Découvrez notre histoire, nos activités et notre communauté de foi
+          <p className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto font-light leading-relaxed">
+            Découvrez notre histoire, notre communauté et notre mission de foi
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
-          {/* Card 1: Historique & Activités */}
-          <Card className="backdrop-blur-md bg-white/6 border border-white/20 rounded-lg px-4 sm:px-6 lg:px-8 py-6 transition-all duration-300 ease-in-out hover:-translate-y-1 hover:shadow-lg group">
-            <CardContent className="p-0 space-y-4 sm:space-y-6">
+        {/* Stats Section */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-20">
+          {stats.map((stat, index) => (
+            <div key={index} className="text-center group">
+              <div className="glass-card rounded-2xl p-8 hover:scale-105 transition-all duration-500 hover:shadow-2xl">
+                <stat.icon className="h-12 w-12 text-primary mx-auto mb-4 group-hover:scale-110 transition-transform duration-300" />
+                <div className="text-4xl sm:text-5xl font-bold text-primary mb-2 font-heading">
+                  {stat.number}
+                </div>
+                <div className="text-lg text-muted-foreground font-medium">
+                  {stat.label}
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Main Content */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-20 items-center">
+          {/* Left Content - Histoire & Activités */}
+          <div className="space-y-10">
+            <div className="space-y-8">
               <div>
-                <h3 className="font-heading text-xl sm:text-2xl font-semibold text-foreground mb-3 flex items-center gap-2">
-                  <Church className="h-5 w-5 text-primary" />
+                <h3 className="font-heading text-3xl sm:text-4xl font-bold text-foreground mb-6 flex items-center gap-3">
+                  <div className="w-2 h-12 bg-primary rounded-full"></div>
                   Notre Histoire
                 </h3>
-                <div className="space-y-3 text-base md:text-lg text-foreground leading-relaxed">
-                  <p>
-                    Fondée en <strong>2018</strong>, notre église a commencé son ministère avec seulement 10 familles unies par la foi et la vision commune de servir Dieu.
+                <div className="space-y-6 text-lg md:text-xl text-foreground leading-relaxed">
+                  <p className="opacity-0 animate-[fadeInUp_0.8s_ease-out_0.2s_forwards]">
+                    Fondée en <span className="font-semibold text-primary">2018</span>, notre église a commencé son ministère avec seulement 10 familles unies par la foi et la vision commune de servir Dieu.
                   </p>
-                  <p>
-                    En <strong>2023</strong>, nous avons rejoint officiellement la paroisse <strong>FPVM</strong> (Fiangonana Protestanta eto Madagasikara), marquant une étape importante de notre développement spirituel.
+                  <p className="opacity-0 animate-[fadeInUp_0.8s_ease-out_0.4s_forwards]">
+                    En <span className="font-semibold text-primary">2023</span>, nous avons rejoint officiellement la paroisse <span className="font-semibold text-primary">FPVM</span> (Fiangonana Protestanta eto Madagasikara), marquant une étape importante de notre développement spirituel.
                   </p>
-                  <p>
-                    Aujourd'hui, notre communauté a grandi pour accueillir près de <strong>300 membres</strong>, témoignant de la grâce de Dieu et de l'engagement de chacun.
+                  <p className="opacity-0 animate-[fadeInUp_0.8s_ease-out_0.6s_forwards]">
+                    Aujourd'hui, notre communauté a grandi pour accueillir près de <span className="font-semibold text-primary">300 membres</span>, témoignant de la grâce de Dieu et de l'engagement de chacun.
                   </p>
                 </div>
               </div>
 
-              <div>
-                <h4 className="font-heading text-lg sm:text-xl font-semibold text-foreground mb-3">
+              <div className="opacity-0 animate-[fadeInUp_0.8s_ease-out_0.8s_forwards]">
+                <h4 className="font-heading text-2xl sm:text-3xl font-bold text-foreground mb-6">
                   Nos Activités
                 </h4>
-                <ul className="space-y-2" role="list">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   {activities.map((activity, index) => {
                     const IconComponent = activity.icon;
                     return (
-                      <li 
+                      <div 
                         key={index}
-                        className="flex items-center gap-3 text-sm sm:text-base text-foreground"
+                        className="flex items-center gap-4 p-4 glass-card rounded-xl hover:scale-105 transition-all duration-300 group"
                       >
-                        <IconComponent className="h-4 w-4 text-primary flex-shrink-0" />
-                        {activity.name}
-                      </li>
+                        <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors duration-300">
+                          <IconComponent className="h-6 w-6 text-primary" />
+                        </div>
+                        <span className="text-base sm:text-lg text-foreground font-medium">
+                          {activity.name}
+                        </span>
+                      </div>
                     );
                   })}
-                </ul>
+                </div>
               </div>
-            </CardContent>
-          </Card>
+            </div>
+          </div>
 
-          {/* Card 2: Pasteur & Portrait */}
-          <Card className="backdrop-blur-md bg-white/6 border border-white/20 rounded-lg px-4 sm:px-6 lg:px-8 py-6 transition-all duration-300 ease-in-out hover:-translate-y-1 hover:shadow-lg group">
-            <CardContent className="p-0 space-y-4 sm:space-y-6">
-              <div>
-                <h3 className="font-heading text-xl sm:text-2xl font-semibold text-foreground mb-3 flex items-center gap-2">
-                  <Presentation className="h-5 w-5 text-primary" />
+          {/* Right Content - Pasteur & Portrait */}
+          <div className="space-y-8">
+            <div className="glass-card rounded-3xl p-8 lg:p-10 hover:scale-105 transition-all duration-500 hover:shadow-2xl">
+              <div className="text-center mb-8">
+                <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-primary/10 mb-6">
+                  <Presentation className="h-8 w-8 text-primary" />
+                </div>
+                <h3 className="font-heading text-2xl sm:text-3xl font-bold text-foreground mb-2">
                   Notre Pasteur
                 </h3>
-
-                {/* Photo du pasteur */}
-                <div className="relative mb-4">
-                  {imageLoading && (
-                    <div className="w-full h-48 sm:h-64 bg-muted rounded-lg animate-pulse flex items-center justify-center">
-                      <Church className="h-8 w-8 text-muted-foreground" />
-                    </div>
-                  )}
-                  
-                  {imageError ? (
-                    <div className="w-full h-48 sm:h-64 bg-muted rounded-lg flex items-center justify-center">
-                      <div className="text-center text-muted-foreground">
-                        <Church className="h-12 w-12 mx-auto mb-2" />
-                        <p className="text-sm">Photo non disponible</p>
-                      </div>
-                    </div>
-                  ) : (
-                    <button
-                      onClick={openImageModal}
-                      className="block w-full focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded-lg"
-                      aria-label="Agrandir la photo du pasteur"
-                      tabIndex={0}
-                    >
-                      <img
-                        src="https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/object/public/document-uploads/1756214400117-g3kayx38ydd.jpg"
-                        alt="Pasteur Iraka Rasamivelona Andrianjaka RAMAROMANOMPO Luther"
-                        className={`w-full h-48 sm:h-64 object-contain object-center rounded-lg transition-transform duration-300 group-hover:scale-105 ${imageLoading ? 'hidden' : 'block'}`}
-                        onLoad={handleImageLoad}
-                        onError={handleImageError}
-                      />
-                    </button>
-                  )}
-                </div>
-
-                <div className="space-y-3">
-                  <h4 className="font-heading text-lg sm:text-xl font-semibold text-foreground">
-                    Pasteur Iraka Rasamivelona Andrianjaka RAMAROMANOMPO Luther
-                  </h4>
-                  <p className="text-sm sm:text-base text-muted-foreground">
-                    Ordonné en <strong>2021</strong>
-                  </p>
-                  <blockquote className="text-base md:text-lg text-foreground leading-relaxed italic border-l-4 border-primary pl-4">
-                    "Servir Dieu et Sa communauté est un privilège que je porte chaque jour avec humilité et reconnaissance. Ensemble, nous grandissons dans la foi et l'amour fraternel."
-                  </blockquote>
-                </div>
               </div>
-            </CardContent>
-          </Card>
+
+              {/* Photo du pasteur */}
+              <div className="relative mb-8">
+                {imageLoading && (
+                  <div className="w-full h-80 bg-muted rounded-2xl animate-pulse flex items-center justify-center">
+                    <Church className="h-12 w-12 text-muted-foreground" />
+                  </div>
+                )}
+                
+                {imageError ? (
+                  <div className="w-full h-80 bg-muted rounded-2xl flex items-center justify-center">
+                    <div className="text-center text-muted-foreground">
+                      <Church className="h-16 w-16 mx-auto mb-4" />
+                      <p className="text-lg">Photo non disponible</p>
+                    </div>
+                  </div>
+                ) : (
+                  <button
+                    onClick={openImageModal}
+                    className="block w-full focus:outline-none focus:ring-4 focus:ring-primary/20 focus:ring-offset-2 rounded-2xl overflow-hidden group"
+                    aria-label="Agrandir la photo du pasteur"
+                    tabIndex={0}
+                  >
+                    <img
+                      src="https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/object/public/document-uploads/1756214400117-g3kayx38ydd.jpg"
+                      alt="Pasteur Iraka Rasamivelona Andrianjaka RAMAROMANOMPO Luther"
+                      className={`w-full h-80 object-cover object-center rounded-2xl transition-all duration-500 group-hover:scale-110 ${imageLoading ? 'hidden' : 'block'}`}
+                      onLoad={handleImageLoad}
+                      onError={handleImageError}
+                    />
+                  </button>
+                )}
+              </div>
+
+              <div className="space-y-6 text-center">
+                <h4 className="font-heading text-xl sm:text-2xl font-bold text-foreground">
+                  Pasteur Iraka Rasamivelona<br />Andrianjaka RAMAROMANOMPO Luther
+                </h4>
+                <p className="text-lg text-primary font-semibold">
+                  Ordonné en 2021
+                </p>
+                <blockquote className="text-lg md:text-xl text-muted-foreground leading-relaxed italic p-6 glass-card rounded-xl">
+                  "Servir Dieu et Sa communauté est un privilège que je porte chaque jour avec humilité et reconnaissance. Ensemble, nous grandissons dans la foi et l'amour fraternel."
+                </blockquote>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -172,30 +206,30 @@ export default function ChurchPresentation({ className = "" }: ChurchPresentatio
           aria-modal="true"
         >
           <div 
-            className="relative max-w-2xl max-h-[90vh] bg-white rounded-lg overflow-hidden"
+            className="relative max-w-4xl max-h-[90vh] bg-white rounded-2xl overflow-hidden shadow-2xl"
             onClick={(e) => e.stopPropagation()}
           >
             <Button
               onClick={closeImageModal}
               variant="ghost"
               size="icon"
-              className="absolute top-2 right-2 z-10 bg-black/20 hover:bg-black/40 text-white"
+              className="absolute top-4 right-4 z-10 bg-black/20 hover:bg-black/40 text-white rounded-full"
               aria-label="Fermer la photo agrandie"
             >
-              <X className="h-4 w-4" />
+              <X className="h-6 w-6" />
             </Button>
             
             <img
               src="https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/object/public/document-uploads/1756214400117-g3kayx38ydd.jpg"
               alt="Pasteur Iraka Rasamivelona Andrianjaka RAMAROMANOMPO Luther - Photo agrandie"
-              className="w-full h-full object-contain object-center"
+              className="w-full h-full object-contain object-center max-h-[80vh]"
             />
             
-            <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-4">
-              <h3 id="modal-title" className="font-heading text-lg font-semibold text-white">
+            <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent p-8">
+              <h3 id="modal-title" className="font-heading text-2xl font-bold text-white mb-2">
                 Pasteur Iraka Rasamivelona Andrianjaka RAMAROMANOMPO Luther
               </h3>
-              <p className="text-sm text-white/90">Ordonné en 2021</p>
+              <p className="text-lg text-white/90">Ordonné en 2021</p>
             </div>
           </div>
         </div>
