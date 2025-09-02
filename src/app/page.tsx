@@ -10,45 +10,50 @@ import Footer from '@/components/Footer';
 
 export default function HomePage() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 font-inter">
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-indigo-900 font-inter overflow-x-hidden">
       {/* Fixed Navigation */}
       <Navigation />
       
       {/* Main content container */}
-      <div className="w-full">
-        {/* Hero Section - Full width */}
-        <div id="accueil">
+      <div className="w-full relative">
+        {/* Hero Section - Full viewport */}
+        <div id="accueil" className="relative">
           <HeroSection />
         </div>
         
-        {/* Centered content container for other sections */}
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <main className="space-y-32 sm:space-y-40 lg:space-y-48 py-20 sm:py-28 lg:py-36">
-            {/* Church Presentation */}
-            <div id="presentation">
-              <ChurchPresentation />
-            </div>
-            
-            {/* Programs Section */}
-            <div id="programmes">
-              <ProgramsThreeCards />
-            </div>
-            
-            {/* Construction Section */}
-            <div id="construction">
-              <ConstructionSection />
-            </div>
-            
-            {/* Gallery Section */}
-            <div id="galerie">
-              <GalleryGrid />
-            </div>
-            
-            {/* Contact Form */}
-            <div id="contact">
-              <ContactForm />
-            </div>
-          </main>
+        {/* Parallax Container for all sections */}
+        <div className="relative">
+          {/* Background layers for parallax */}
+          <div className="fixed inset-0 -z-10">
+            <div className="absolute inset-0 bg-gradient-to-br from-slate-900/50 via-purple-900/30 to-indigo-900/50" />
+            <div className="stars opacity-20"></div>
+            <div className="twinkling opacity-30"></div>
+          </div>
+          
+          {/* Church Presentation with parallax */}
+          <div id="presentation" className="relative z-10">
+            <ChurchPresentation />
+          </div>
+          
+          {/* Programs Section with parallax */}
+          <div id="programmes" className="relative z-10">
+            <ProgramsThreeCards />
+          </div>
+          
+          {/* Construction Section with parallax */}
+          <div id="construction" className="relative z-10">
+            <ConstructionSection />
+          </div>
+          
+          {/* Gallery Section with parallax */}
+          <div id="galerie" className="relative z-10">
+            <GalleryGrid />
+          </div>
+          
+          {/* Contact Form with parallax */}
+          <div id="contact" className="relative z-10">
+            <ContactForm />
+          </div>
         </div>
         
         {/* Footer - Full width */}
