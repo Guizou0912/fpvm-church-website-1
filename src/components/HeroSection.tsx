@@ -32,6 +32,8 @@ export default function HeroSection() {
   });
 
   useEffect(() => {
+    if (typeof window === 'undefined') return;
+    
     const handleScroll = () => setScrollY(window.scrollY);
     window.addEventListener('scroll', handleScroll);
     
@@ -69,7 +71,7 @@ export default function HeroSection() {
         <div className="clouds"></div>
       </motion.div>
       
-      {/* Parallax Pastor Image with multiple layers */}
+      {/* Parallax Pastor Image with multiple layers - Updated with 8K celestial image */}
       <motion.div
         className="absolute inset-0"
         style={{ y: backgroundYSpring, scale: useTransform(scrollYProgress, [0, 1], [1.1, 1.3]) }}
@@ -77,45 +79,53 @@ export default function HeroSection() {
         <div
           className="absolute inset-0 bg-cover bg-center bg-no-repeat"
           style={{
-            backgroundImage: "url('https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/object/public/document-uploads/1756837630568-4fwb6vbeqeq.png')",
+            backgroundImage: "url('https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/object/public/project-uploads/f295b977-6afb-40e7-ac5c-8f643cd4748d/generated_images/high-resolution-8k-photorealistic-portra-8f0e0ff3-20250903140130.jpg')",
           }}
           role="img"
-          aria-label="Portrait du pasteur en tenue religieuse"
+          aria-label="Portrait 8K du pasteur avec fond céleste et portes du ciel"
         />
       </motion.div>
       
-      {/* Dynamic gradient overlays */}
+      {/* Dynamic gradient overlays - Reduced to let celestial background show through */}
       <motion.div 
-        className="absolute inset-0 bg-gradient-to-b from-indigo-900/60 via-purple-900/50 to-slate-900/70" 
+        className="absolute inset-0 bg-gradient-to-b from-indigo-900/40 via-purple-900/30 to-slate-900/50" 
         style={{ opacity: overlayOpacity }}
       />
       <motion.div 
-        className="absolute inset-0 bg-gradient-to-r from-transparent via-black/30 to-transparent"
-        style={{ opacity: useTransform(scrollYProgress, [0, 1], [0.2, 0.6]) }}
+        className="absolute inset-0 bg-gradient-to-r from-transparent via-black/20 to-transparent"
+        style={{ opacity: useTransform(scrollYProgress, [0, 1], [0.1, 0.4]) }}
       />
       
-      {/* Enhanced Floating Light Particles */}
+      {/* Enhanced Floating Light Particles - Updated for celestial theme */}
       <div className="absolute inset-0 overflow-hidden">
         <div className="floating-particles">
-          {[...Array(20)].map((_, i) => (
+          {[...Array(30)].map((_, i) => (
             <motion.div 
               key={i}
-              className="particle"
+              className="particle celestial-particle"
               initial={{ opacity: 0, scale: 0 }}
               animate={{ 
-                opacity: [0, 1, 0],
-                scale: [0, 1, 0],
-                y: [-20, -window.innerHeight - 20],
-                x: [0, Math.sin(i) * 100]
+                opacity: [0, 0.8, 0],
+                scale: [0, 1.5, 0],
+                y: [typeof window !== 'undefined' ? window.innerHeight : 1000, -100],
+                x: [0, Math.sin(i) * 150]
               }}
               transition={{
-                duration: 8 + Math.random() * 6,
+                duration: 12 + Math.random() * 8,
                 repeat: Infinity,
-                delay: Math.random() * 10,
+                delay: Math.random() * 15,
                 ease: "linear"
               }}
               style={{
                 left: `${Math.random() * 100}%`,
+                background: i % 3 === 0 ? 'radial-gradient(circle, #ffd700 0%, transparent 70%)' :
+                           i % 3 === 1 ? 'radial-gradient(circle, #87ceeb 0%, transparent 70%)' :
+                           'radial-gradient(circle, #f0f8ff 0%, transparent 70%)',
+                width: `${2 + Math.random() * 4}px`,
+                height: `${2 + Math.random() * 4}px`,
+                borderRadius: '50%',
+                filter: 'blur(0.5px)',
+                boxShadow: '0 0 10px rgba(255, 215, 0, 0.3)'
               }}
             />
           ))}
