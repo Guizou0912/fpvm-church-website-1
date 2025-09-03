@@ -49,9 +49,11 @@ export const Footer = () => {
   const middleLayerY = useTransform(scrollYProgress, [0, 1], ["0%", "25%"]);
   const foregroundY = useTransform(scrollYProgress, [0, 1], ["0%", "10%"]);
 
-  // Mouse parallax
+  // Mouse parallax transforms - calculated once
   const springX = useSpring(mouseX, { stiffness: 300, damping: 30 });
   const springY = useSpring(mouseY, { stiffness: 300, damping: 30 });
+  const particleTransformX = useTransform(springX, [0, 100], [0, 20]);
+  const particleTransformY = useTransform(springY, [0, 100], [0, 20]);
 
   // Initialize particles
   useEffect(() => {
@@ -175,30 +177,30 @@ export const Footer = () => {
 
       {/* Floating Particles */}
       <div className="absolute inset-0 overflow-hidden">
-        {particles.map((particle, index) => (
-          <motion.div
-            key={index}
-            className="absolute w-1 h-1 bg-white/20 rounded-full"
-            style={{
-              left: `${particle.x}%`,
-              top: `${particle.y}%`,
-              width: `${particle.size}px`,
-              height: `${particle.size}px`,
-              opacity: particle.opacity,
-              x: useTransform(springX, [0, 100], [0, particle.size * 2]),
-              y: useTransform(springY, [0, 100], [0, particle.size * 2])
-            }}
-            animate={{
-              scale: [1, 1.2, 1],
-              opacity: [particle.opacity, particle.opacity * 1.5, particle.opacity]
-            }}
-            transition={{
-              duration: 3 + Math.random() * 2,
-              repeat: Infinity,
-              repeatType: "reverse"
-            }}
-          />
-        ))}
+        <motion.div style={{ x: particleTransformX, y: particleTransformY }}>
+          {particles.map((particle, index) => (
+            <motion.div
+              key={index}
+              className="absolute bg-white/20 rounded-full"
+              style={{
+                left: `${particle.x}%`,
+                top: `${particle.y}%`,
+                width: `${particle.size}px`,
+                height: `${particle.size}px`,
+                opacity: particle.opacity
+              }}
+              animate={{
+                scale: [1, 1.2, 1],
+                opacity: [particle.opacity, particle.opacity * 1.5, particle.opacity]
+              }}
+              transition={{
+                duration: 3 + Math.random() * 2,
+                repeat: Infinity,
+                repeatType: "reverse"
+              }}
+            />
+          ))}
+        </motion.div>
       </div>
 
       {/* Glassmorphism Container */}
