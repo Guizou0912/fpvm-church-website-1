@@ -5,7 +5,7 @@ import ProgramsThreeCards from '@/components/ProgramsThreeCards';
 import ConstructionSection from '@/components/ConstructionSection';
 import GalleryGrid from '@/components/GalleryGrid';
 import ContactForm from '@/components/ContactForm';
-import FloatingDonateButton from '@/components/FloatingDonateButton';
+import { FloatingDonateButton } from '@/components/FloatingDonateButton';
 import Footer from '@/components/Footer';
 
 export default function HomePage() {

@@ -1,211 +1,464 @@
-import React from 'react';
-import { Phone, Mail, MapPin, Facebook, Instagram, Twitter, Youtube } from 'lucide-react';
+"use client";
 
-export default function Footer() {
-  const currentYear = new Date().getFullYear();
+import React, { useState, useEffect, useRef } from 'react';
+import { motion, useScroll, useTransform, useMotionValue, useSpring } from 'framer-motion';
+import { 
+  MapPin, 
+  Phone, 
+  Mail, 
+  Clock, 
+  Facebook, 
+  Instagram, 
+  Youtube, 
+  Twitter,
+  ArrowRight,
+  Heart,
+  Send
+} from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+
+interface ParticleProps {
+  x: number;
+  y: number;
+  size: number;
+  opacity: number;
+  speed: number;
+}
+
+interface NewsletterFormData {
+  email: string;
+}
+
+export const Footer = () => {
+  const footerRef = useRef<HTMLElement>(null);
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+  const [particles, setParticles] = useState<ParticleProps[]>([]);
+  const [newsletterData, setNewsletterData] = useState<NewsletterFormData>({ email: '' });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
+
+  const { scrollYProgress } = useScroll({
+    target: footerRef,
+    offset: ["start end", "end start"]
+  });
+
+  // Parallax transforms for different layers
+  const backgroundY = useTransform(scrollYProgress, [0, 1], ["0%", "50%"]);
+  const middleLayerY = useTransform(scrollYProgress, [0, 1], ["0%", "25%"]);
+  const foregroundY = useTransform(scrollYProgress, [0, 1], ["0%", "10%"]);
+
+  // Mouse parallax
+  const springX = useSpring(mouseX, { stiffness: 300, damping: 30 });
+  const springY = useSpring(mouseY, { stiffness: 300, damping: 30 });
+
+  // Initialize particles
+  useEffect(() => {
+    const newParticles: ParticleProps[] = [];
+    for (let i = 0; i < 50; i++) {
+      newParticles.push({
+        x: Math.random() * 100,
+        y: Math.random() * 100,
+        size: Math.random() * 4 + 1,
+        opacity: Math.random() * 0.5 + 0.1,
+        speed: Math.random() * 2 + 0.5
+      });
+    }
+    setParticles(newParticles);
+  }, []);
+
+  // Animate particles
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setParticles(prev => prev.map(particle => ({
+        ...particle,
+        y: (particle.y + particle.speed * 0.1) % 100,
+        x: particle.x + Math.sin(Date.now() * 0.001 + particle.y) * 0.1
+      })));
+    }, 50);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  const handleMouseMove = (event: React.MouseEvent) => {
+    if (!footerRef.current) return;
+    const rect = footerRef.current.getBoundingClientRect();
+    const x = (event.clientX - rect.left) / rect.width - 0.5;
+    const y = (event.clientY - rect.top) / rect.height - 0.5;
+    mouseX.set(x * 100);
+    mouseY.set(y * 100);
+  };
+
+  const handleNewsletterSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newsletterData.email.trim()) return;
+
+    setIsSubmitting(true);
+    
+    // Simulate API call
+    setTimeout(() => {
+      setIsSubmitting(false);
+      setSubmitStatus('success');
+      setNewsletterData({ email: '' });
+      
+      setTimeout(() => {
+        setSubmitStatus('idle');
+      }, 3000);
+    }, 1500);
+  };
 
   const quickLinks = [
-    { name: 'Accueil', href: '#hero' },
-    { name: 'Présentation', href: '#presentation' },
-    { name: 'Programmes', href: '#programmes' },
-    { name: 'Construction', href: '#construction' },
-    { name: 'Galerie', href: '#gallery' },
-    { name: 'Contact', href: '#contact' }
+    { name: 'Home', href: '/' },
+    { name: 'About Us', href: '/about' },
+    { name: 'Services', href: '/services' },
+    { name: 'Events', href: '/events' },
+    { name: 'Ministries', href: '/ministries' },
+    { name: 'Contact', href: '/contact' }
   ];
 
   const socialLinks = [
-    { name: 'Facebook', icon: Facebook, href: '#', color: 'hover:text-blue-400' },
-    { name: 'Instagram', icon: Instagram, href: '#', color: 'hover:text-pink-400' },
-    { name: 'Twitter', icon: Twitter, href: '#', color: 'hover:text-sky-400' },
-    { name: 'YouTube', icon: Youtube, href: '#', color: 'hover:text-red-400' }
+    { name: 'Facebook', icon: Facebook, href: 'https://facebook.com', color: 'hover:text-blue-400' },
+    { name: 'Instagram', icon: Instagram, href: 'https://instagram.com', color: 'hover:text-pink-400' },
+    { name: 'YouTube', icon: Youtube, href: 'https://youtube.com', color: 'hover:text-red-400' },
+    { name: 'Twitter', icon: Twitter, href: 'https://twitter.com', color: 'hover:text-blue-300' }
   ];
 
-  return (
-    <footer className="relative overflow-hidden">
-      {/* Background with glassmorphism */}
-      <div className="absolute inset-0 bg-gradient-to-br from-purple-600/20 via-blue-600/20 to-indigo-600/30" />
-      <div className="absolute inset-0 backdrop-blur-xl" />
-      
-      {/* Decorative elements */}
-      <div className="absolute top-0 left-1/4 w-96 h-96 bg-gradient-to-br from-purple-400/20 to-blue-500/20 rounded-full blur-3xl animate-gentle-float" />
-      <div className="absolute bottom-0 right-1/4 w-72 h-72 bg-gradient-to-br from-indigo-400/20 to-purple-500/20 rounded-full blur-3xl animate-gentle-float" style={{ animationDelay: '1s' }} />
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1,
+        delayChildren: 0.2
+      }
+    }
+  };
 
-      <div className="relative">
-        {/* Main footer content */}
-        <div className="max-w-7xl mx-auto px-6 py-16 sm:py-20">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12">
+  const itemVariants = {
+    hidden: { y: 50, opacity: 0 },
+    visible: {
+      y: 0,
+      opacity: 1,
+      transition: {
+        type: "spring",
+        stiffness: 100,
+        damping: 12
+      }
+    }
+  };
+
+  return (
+    <footer
+      ref={footerRef}
+      className="relative overflow-hidden"
+      onMouseMove={handleMouseMove}
+    >
+      {/* Animated Background Layers */}
+      <motion.div
+        style={{ y: backgroundY }}
+        className="absolute inset-0 bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-950"
+      >
+        {/* Animated Gradient Overlay */}
+        <motion.div
+          className="absolute inset-0 bg-gradient-to-tr from-purple-600/20 via-blue-500/10 to-violet-600/20"
+          animate={{
+            background: [
+              "linear-gradient(135deg, rgba(147, 51, 234, 0.2) 0%, rgba(59, 130, 246, 0.1) 50%, rgba(139, 92, 246, 0.2) 100%)",
+              "linear-gradient(135deg, rgba(139, 92, 246, 0.2) 0%, rgba(147, 51, 234, 0.1) 50%, rgba(59, 130, 246, 0.2) 100%)",
+              "linear-gradient(135deg, rgba(59, 130, 246, 0.2) 0%, rgba(139, 92, 246, 0.1) 50%, rgba(147, 51, 234, 0.2) 100%)"
+            ]
+          }}
+          transition={{ duration: 8, repeat: Infinity, repeatType: "reverse" }}
+        />
+      </motion.div>
+
+      {/* Floating Particles */}
+      <div className="absolute inset-0 overflow-hidden">
+        {particles.map((particle, index) => (
+          <motion.div
+            key={index}
+            className="absolute w-1 h-1 bg-white/20 rounded-full"
+            style={{
+              left: `${particle.x}%`,
+              top: `${particle.y}%`,
+              width: `${particle.size}px`,
+              height: `${particle.size}px`,
+              opacity: particle.opacity,
+              x: useTransform(springX, [0, 100], [0, particle.size * 2]),
+              y: useTransform(springY, [0, 100], [0, particle.size * 2])
+            }}
+            animate={{
+              scale: [1, 1.2, 1],
+              opacity: [particle.opacity, particle.opacity * 1.5, particle.opacity]
+            }}
+            transition={{
+              duration: 3 + Math.random() * 2,
+              repeat: Infinity,
+              repeatType: "reverse"
+            }}
+          />
+        ))}
+      </div>
+
+      {/* Glassmorphism Container */}
+      <motion.div
+        style={{ y: middleLayerY }}
+        className="relative backdrop-blur-xl bg-white/5 border-t border-white/10"
+      >
+        <div className="absolute inset-0 bg-gradient-to-b from-white/5 to-transparent" />
+        
+        <motion.div
+          className="relative container mx-auto px-6 py-16"
+          variants={containerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-100px" }}
+        >
+          {/* Main Footer Content */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
             
-            {/* Church Info */}
-            <div className="lg:col-span-1 animate-fade-in-up" style={{ animationDelay: '0.1s' }}>
-              <div className="glass-card rounded-2xl p-6 h-full">
-                <h3 className="font-heading text-xl font-bold text-white mb-4">
-                  Église Évangélique
-                </h3>
-                <p className="text-white/80 text-sm leading-relaxed mb-6">
-                  Une communauté de foi vivante, dédiée à l'amour, au service et à la croissance spirituelle dans la grâce de Dieu.
+            {/* Church Information */}
+            <motion.div variants={itemVariants} className="space-y-6">
+              <div className="space-y-4">
+                <motion.h3 
+                  className="text-2xl font-bold text-white flex items-center gap-2"
+                  whileHover={{ scale: 1.05 }}
+                  transition={{ type: "spring", stiffness: 300 }}
+                >
+                  <Heart className="w-6 h-6 text-purple-400" />
+                  Grace Chapel
+                </motion.h3>
+                <p className="text-gray-300 leading-relaxed">
+                  A community of faith, hope, and love. Join us as we grow together in Christ and serve our community with compassion and grace.
                 </p>
-                <div className="flex items-center space-x-3">
-                  <div className="w-2 h-2 bg-gradient-to-r from-purple-400 to-blue-400 rounded-full animate-pulse" />
-                  <span className="text-white/60 text-xs font-medium">Communauté Active</span>
-                </div>
               </div>
-            </div>
+              
+              <motion.div
+                className="p-4 rounded-xl bg-white/5 backdrop-blur-sm border border-white/10"
+                whileHover={{ scale: 1.02, backgroundColor: "rgba(255, 255, 255, 0.08)" }}
+                transition={{ type: "spring", stiffness: 300 }}
+              >
+                <p className="text-purple-300 font-medium text-sm mb-2">Our Mission</p>
+                <p className="text-gray-300 text-sm">
+                  "To know Christ and make Him known through worship, discipleship, and service."
+                </p>
+              </motion.div>
+            </motion.div>
 
             {/* Quick Links */}
-            <div className="animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
-              <div className="glass-card rounded-2xl p-6 h-full">
-                <h4 className="font-heading text-lg font-semibold text-white mb-6">
-                  Navigation
-                </h4>
-                <nav className="space-y-3">
-                  {quickLinks.map((link, index) => (
-                    <a
-                      key={link.name}
-                      href={link.href}
-                      className="block text-white/70 hover:text-white text-sm font-medium transition-all duration-300 ease-in-out hover:translate-x-2 hover:scale-105"
-                      style={{ animationDelay: `${0.3 + index * 0.1}s` }}
-                      aria-label={`Naviguer vers ${link.name}`}
-                    >
-                      {link.name}
-                    </a>
-                  ))}
-                </nav>
-              </div>
-            </div>
+            <motion.div variants={itemVariants} className="space-y-6">
+              <h4 className="text-xl font-semibold text-white">Quick Links</h4>
+              <nav className="space-y-3">
+                {quickLinks.map((link, index) => (
+                  <motion.a
+                    key={link.name}
+                    href={link.href}
+                    className="group flex items-center gap-2 text-gray-300 hover:text-white transition-colors duration-300"
+                    whileHover={{ x: 8, scale: 1.05 }}
+                    transition={{ type: "spring", stiffness: 400, damping: 25 }}
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    style={{ animationDelay: `${index * 0.1}s` }}
+                  >
+                    <ArrowRight className="w-4 h-4 group-hover:text-purple-400 transition-colors" />
+                    {link.name}
+                  </motion.a>
+                ))}
+              </nav>
+            </motion.div>
 
-            {/* Contact Info */}
-            <div className="animate-fade-in-up" style={{ animationDelay: '0.3s' }}>
-              <div className="glass-card rounded-2xl p-6 h-full">
-                <h4 className="font-heading text-lg font-semibold text-white mb-6">
-                  Contact
-                </h4>
-                <div className="space-y-4">
-                  <div className="flex items-start space-x-3 group">
-                    <div className="flex-shrink-0 w-8 h-8 bg-gradient-to-br from-purple-400/20 to-blue-400/20 rounded-lg flex items-center justify-center backdrop-blur-sm border border-white/10 group-hover:scale-110 transition-transform duration-300">
-                      <Phone className="w-4 h-4 text-white/80" />
-                    </div>
-                    <div>
-                      <p className="text-white/70 text-sm">+33 1 23 45 67 89</p>
-                      <p className="text-white/70 text-sm">+33 6 12 34 56 78</p>
-                    </div>
+            {/* Contact Information */}
+            <motion.div variants={itemVariants} className="space-y-6">
+              <h4 className="text-xl font-semibold text-white">Contact Us</h4>
+              <div className="space-y-4">
+                <motion.div 
+                  className="flex items-start gap-3 group"
+                  whileHover={{ x: 5 }}
+                  transition={{ type: "spring", stiffness: 300 }}
+                >
+                  <MapPin className="w-5 h-5 text-purple-400 mt-0.5 group-hover:scale-110 transition-transform" />
+                  <div>
+                    <p className="text-gray-300">123 Faith Street</p>
+                    <p className="text-gray-300">Springfield, IL 62701</p>
                   </div>
-                  
-                  <div className="flex items-start space-x-3 group">
-                    <div className="flex-shrink-0 w-8 h-8 bg-gradient-to-br from-purple-400/20 to-blue-400/20 rounded-lg flex items-center justify-center backdrop-blur-sm border border-white/10 group-hover:scale-110 transition-transform duration-300">
-                      <Mail className="w-4 h-4 text-white/80" />
-                    </div>
-                    <div>
-                      <p className="text-white/70 text-sm">contact@eglise.org</p>
-                    </div>
-                  </div>
-                  
-                  <div className="flex items-start space-x-3 group">
-                    <div className="flex-shrink-0 w-8 h-8 bg-gradient-to-br from-purple-400/20 to-blue-400/20 rounded-lg flex items-center justify-center backdrop-blur-sm border border-white/10 group-hover:scale-110 transition-transform duration-300">
-                      <MapPin className="w-4 h-4 text-white/80" />
-                    </div>
-                    <div>
-                      <p className="text-white/70 text-sm">123 Rue de la Paix</p>
-                      <p className="text-white/70 text-sm">75001 Paris, France</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
+                </motion.div>
 
-            {/* Social Media */}
-            <div className="animate-fade-in-up" style={{ animationDelay: '0.4s' }}>
-              <div className="glass-card rounded-2xl p-6 h-full">
-                <h4 className="font-heading text-lg font-semibold text-white mb-6">
-                  Suivez-nous
-                </h4>
-                <div className="grid grid-cols-2 gap-3">
-                  {socialLinks.map((social, index) => {
-                    const IconComponent = social.icon;
-                    return (
-                      <a
-                        key={social.name}
-                        href={social.href}
-                        className={`group flex items-center justify-center w-full h-12 bg-gradient-to-br from-white/10 to-white/5 rounded-xl backdrop-blur-sm border border-white/10 transition-all duration-300 ease-in-out hover:scale-105 hover:shadow-lg ${social.color}`}
-                        aria-label={`Suivre sur ${social.name}`}
-                        style={{ animationDelay: `${0.5 + index * 0.1}s` }}
-                      >
-                        <IconComponent className="w-5 h-5 text-white/70 group-hover:text-current transition-colors duration-300" />
-                      </a>
-                    );
-                  })}
-                </div>
-                
-                {/* Newsletter signup */}
-                <div className="mt-6 pt-6 border-t border-white/10">
-                  <p className="text-white/60 text-xs mb-3">Restez informés</p>
-                  <div className="flex space-x-2">
-                    <input
-                      type="email"
-                      placeholder="Votre email"
-                      className="flex-1 px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/40 text-sm backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-purple-400/50 focus:border-transparent transition-all duration-300"
-                      aria-label="Adresse email pour la newsletter"
-                    />
-                    <button
-                      className="px-4 py-2 bg-gradient-to-r from-purple-500/80 to-blue-500/80 text-white text-sm font-medium rounded-lg hover:from-purple-600/90 hover:to-blue-600/90 transition-all duration-300 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-purple-400/50"
-                      aria-label="S'inscrire à la newsletter"
-                    >
-                      OK
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+                <motion.div 
+                  className="flex items-center gap-3 group cursor-pointer"
+                  whileHover={{ x: 5 }}
+                  transition={{ type: "spring", stiffness: 300 }}
+                >
+                  <Phone className="w-5 h-5 text-purple-400 group-hover:scale-110 transition-transform" />
+                  <p className="text-gray-300 group-hover:text-white transition-colors">
+                    (555) 123-4567
+                  </p>
+                </motion.div>
 
-        {/* Bottom section */}
-        <div className="border-t border-white/10 backdrop-blur-sm">
-          <div className="max-w-7xl mx-auto px-6 py-8">
-            <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
+                <motion.div 
+                  className="flex items-center gap-3 group cursor-pointer"
+                  whileHover={{ x: 5 }}
+                  transition={{ type: "spring", stiffness: 300 }}
+                >
+                  <Mail className="w-5 h-5 text-purple-400 group-hover:scale-110 transition-transform" />
+                  <p className="text-gray-300 group-hover:text-white transition-colors">
+                    info@gracechapel.org
+                  </p>
+                </motion.div>
+
+                <motion.div 
+                  className="flex items-start gap-3 group"
+                  whileHover={{ x: 5 }}
+                  transition={{ type: "spring", stiffness: 300 }}
+                >
+                  <Clock className="w-5 h-5 text-purple-400 mt-0.5 group-hover:scale-110 transition-transform" />
+                  <div>
+                    <p className="text-gray-300">Sunday Services:</p>
+                    <p className="text-gray-300">9:00 AM & 11:00 AM</p>
+                    <p className="text-gray-300 text-sm mt-1">Wednesday Prayer: 7:00 PM</p>
+                  </div>
+                </motion.div>
+              </div>
+            </motion.div>
+
+            {/* Newsletter & Social */}
+            <motion.div variants={itemVariants} className="space-y-6">
+              <h4 className="text-xl font-semibold text-white">Stay Connected</h4>
               
-              {/* Copyright */}
-              <div className="flex items-center space-x-4 animate-fade-in-up" style={{ animationDelay: '0.6s' }}>
-                <div className="flex items-center space-x-2">
-                  <div className="w-6 h-6 bg-gradient-to-br from-purple-400 to-blue-400 rounded-lg flex items-center justify-center">
-                    <div className="w-3 h-3 bg-white rounded-sm" />
-                  </div>
-                  <span className="text-white/80 text-sm font-medium">Église Évangélique</span>
+              {/* Newsletter Signup */}
+              <motion.div 
+                className="p-4 rounded-xl bg-white/5 backdrop-blur-sm border border-white/10"
+                whileHover={{ backgroundColor: "rgba(255, 255, 255, 0.08)" }}
+                transition={{ type: "spring", stiffness: 300 }}
+              >
+                <p className="text-gray-300 text-sm mb-4">
+                  Subscribe to our newsletter for updates and inspiration.
+                </p>
+                <form onSubmit={handleNewsletterSubmit} className="space-y-3">
+                  <motion.div
+                    whileFocus={{ scale: 1.02 }}
+                    transition={{ type: "spring", stiffness: 300 }}
+                  >
+                    <Input
+                      type="email"
+                      placeholder="Enter your email"
+                      value={newsletterData.email}
+                      onChange={(e) => setNewsletterData({ email: e.target.value })}
+                      className="bg-white/10 border-white/20 text-white placeholder:text-gray-400 focus:border-purple-400 focus:ring-purple-400/20"
+                      disabled={isSubmitting || submitStatus === 'success'}
+                    />
+                  </motion.div>
+                  <Button
+                    type="submit"
+                    disabled={isSubmitting || submitStatus === 'success' || !newsletterData.email.trim()}
+                    className="w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white border-0 disabled:opacity-50"
+                  >
+                    <motion.div
+                      className="flex items-center justify-center gap-2"
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                    >
+                      {isSubmitting ? (
+                        <motion.div
+                          animate={{ rotate: 360 }}
+                          transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+                          className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full"
+                        />
+                      ) : submitStatus === 'success' ? (
+                        <>
+                          <Heart className="w-4 h-4" />
+                          Subscribed!
+                        </>
+                      ) : (
+                        <>
+                          <Send className="w-4 h-4" />
+                          Subscribe
+                        </>
+                      )}
+                    </motion.div>
+                  </Button>
+                </form>
+              </motion.div>
+
+              {/* Social Media Links */}
+              <div>
+                <p className="text-gray-300 text-sm mb-4">Follow us on social media</p>
+                <div className="flex gap-4">
+                  {socialLinks.map((social, index) => (
+                    <motion.a
+                      key={social.name}
+                      href={social.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={`p-3 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 text-gray-300 ${social.color} transition-all duration-300 hover:bg-white/20 hover:scale-110 hover:shadow-lg`}
+                      whileHover={{ 
+                        y: -5,
+                        rotateY: 180,
+                        boxShadow: "0 10px 25px rgba(0,0,0,0.2)"
+                      }}
+                      whileTap={{ scale: 0.9 }}
+                      initial={{ opacity: 0, scale: 0 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      transition={{ 
+                        delay: index * 0.1,
+                        type: "spring",
+                        stiffness: 400,
+                        damping: 10
+                      }}
+                      aria-label={`Follow us on ${social.name}`}
+                    >
+                      <social.icon className="w-5 h-5" />
+                    </motion.a>
+                  ))}
                 </div>
-                <span className="text-white/40 text-sm">
-                  © {currentYear} Tous droits réservés
-                </span>
               </div>
-
-              {/* Legal links */}
-              <div className="flex items-center space-x-6 animate-fade-in-up" style={{ animationDelay: '0.7s' }}>
-                <a
-                  href="#"
-                  className="text-white/60 hover:text-white text-sm transition-colors duration-300"
-                  aria-label="Mentions légales"
-                >
-                  Mentions légales
-                </a>
-                <span className="text-white/30">•</span>
-                <a
-                  href="#"
-                  className="text-white/60 hover:text-white text-sm transition-colors duration-300"
-                  aria-label="Politique de confidentialité"
-                >
-                  Politique de confidentialité
-                </a>
-              </div>
-            </div>
-
-            {/* Inspirational quote */}
-            <div className="mt-8 pt-6 border-t border-white/5 text-center animate-fade-in-up" style={{ animationDelay: '0.8s' }}>
-              <blockquote className="text-white/60 text-sm italic font-light">
-                "Car là où deux ou trois sont assemblés en mon nom, je suis au milieu d'eux."
-              </blockquote>
-              <cite className="text-white/40 text-xs mt-2 block">Matthieu 18:20</cite>
-            </div>
+            </motion.div>
           </div>
-        </div>
-      </div>
+
+          {/* Footer Bottom */}
+          <motion.div
+            variants={itemVariants}
+            className="pt-8 border-t border-white/10"
+          >
+            <motion.div 
+              className="flex flex-col md:flex-row justify-between items-center gap-4"
+              style={{ y: foregroundY }}
+            >
+              <div className="text-gray-400 text-sm">
+                <p>&copy; 2024 Grace Chapel. All rights reserved.</p>
+              </div>
+              <div className="flex gap-6 text-sm text-gray-400">
+                <motion.a 
+                  href="/privacy" 
+                  className="hover:text-white transition-colors"
+                  whileHover={{ scale: 1.05 }}
+                >
+                  Privacy Policy
+                </motion.a>
+                <motion.a 
+                  href="/terms" 
+                  className="hover:text-white transition-colors"
+                  whileHover={{ scale: 1.05 }}
+                >
+                  Terms of Service
+                </motion.a>
+                <motion.a 
+                  href="/accessibility" 
+                  className="hover:text-white transition-colors"
+                  whileHover={{ scale: 1.05 }}
+                >
+                  Accessibility
+                </motion.a>
+              </div>
+            </motion.div>
+          </motion.div>
+        </motion.div>
+      </motion.div>
+
+      {/* Bottom Gradient Fade */}
+      <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-black/50 to-transparent pointer-events-none" />
     </footer>
   );
-}
+};
+
+export default Footer;
