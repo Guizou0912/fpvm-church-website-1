@@ -23,6 +23,8 @@ export default function Navigation() {
   const backdropBlur = useTransform(scrollY, [0, 100], [0, 20]);
 
   useEffect(() => {
+    if (typeof window === 'undefined') return;
+
     const handleScroll = () => {
       setScrolled(window.scrollY > 20);
 

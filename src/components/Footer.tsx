@@ -55,8 +55,10 @@ export const Footer = () => {
   const particleTransformX = useTransform(springX, [0, 100], [0, 20]);
   const particleTransformY = useTransform(springY, [0, 100], [0, 20]);
 
-  // Initialize particles
+  // Initialize particles (client-side only)
   useEffect(() => {
+    if (typeof window === 'undefined') return;
+    
     const newParticles: ParticleProps[] = [];
     for (let i = 0; i < 50; i++) {
       newParticles.push({
@@ -70,8 +72,10 @@ export const Footer = () => {
     setParticles(newParticles);
   }, []);
 
-  // Animate particles
+  // Animate particles (client-side only)
   useEffect(() => {
+    if (typeof window === 'undefined') return;
+    
     const interval = setInterval(() => {
       setParticles(prev => prev.map(particle => ({
         ...particle,
@@ -84,7 +88,7 @@ export const Footer = () => {
   }, []);
 
   const handleMouseMove = (event: React.MouseEvent) => {
-    if (!footerRef.current) return;
+    if (!footerRef.current || typeof window === 'undefined') return;
     const rect = footerRef.current.getBoundingClientRect();
     const x = (event.clientX - rect.left) / rect.width - 0.5;
     const y = (event.clientY - rect.top) / rect.height - 0.5;

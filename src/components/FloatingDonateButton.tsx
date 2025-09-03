@@ -32,8 +32,10 @@ export const FloatingDonateButton = () => {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [isClicked, setIsClicked] = useState(false);
 
-  // Track mouse position for magnetic effect
+  // Track mouse position for magnetic effect (client-side only)
   useEffect(() => {
+    if (typeof window === 'undefined') return;
+
     const handleMouseMove = (e: MouseEvent) => {
       setMousePosition({ x: e.clientX, y: e.clientY });
     };
@@ -44,7 +46,7 @@ export const FloatingDonateButton = () => {
 
   // Calculate magnetic offset
   const calculateMagneticOffset = (buttonRef: HTMLElement | null) => {
-    if (!buttonRef || !isHovered) return { x: 0, y: 0 };
+    if (!buttonRef || !isHovered || typeof window === 'undefined') return { x: 0, y: 0 };
 
     const rect = buttonRef.getBoundingClientRect();
     const buttonCenterX = rect.left + rect.width / 2;
