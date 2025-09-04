@@ -79,10 +79,10 @@ export default function HeroSection() {
         <div
           className="absolute inset-0 bg-cover bg-center bg-no-repeat"
           style={{
-            backgroundImage: "url('https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/object/public/project-uploads/f295b977-6afb-40e7-ac5c-8f643cd4748d/generated_images/ultra-high-resolution-8k-photorealistic--a868a37d-20250904132117.jpg')",
+            backgroundImage: "url('https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/object/public/document-uploads/1756992161521-fot86zkm14q.png')",
           }}
           role="img"
-          aria-label="Portrait 8K du pasteur sur fond céleste avec nuages harmonisé au design du site"
+          aria-label="Portrait du pasteur de l'église FPVM Franco-Malagasy"
         />
       </motion.div>
       
