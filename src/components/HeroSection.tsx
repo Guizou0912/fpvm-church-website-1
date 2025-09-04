@@ -71,7 +71,7 @@ export default function HeroSection() {
         <div className="clouds"></div>
       </motion.div>
       
-      {/* Parallax Pastor Image with multiple layers - Updated with 8K celestial image */}
+      {/* Parallax Pastor Image with multiple layers - Updated with your pastor on celestial background */}
       <motion.div
         className="absolute inset-0"
         style={{ y: backgroundYSpring, scale: useTransform(scrollYProgress, [0, 1], [1.1, 1.3]) }}
@@ -79,10 +79,10 @@ export default function HeroSection() {
         <div
           className="absolute inset-0 bg-cover bg-center bg-no-repeat"
           style={{
-            backgroundImage: "url('https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/object/public/project-uploads/f295b977-6afb-40e7-ac5c-8f643cd4748d/generated_images/ultra-high-resolution-8k-photorealistic--a44853a8-20250903140629.jpg')",
+            backgroundImage: "url('https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/object/public/project-uploads/f295b977-6afb-40e7-ac5c-8f643cd4748d/generated_images/ultra-high-resolution-8k-photorealistic--631a0f50-20250904093715.jpg')",
           }}
           role="img"
-          aria-label="Portrait 8K du pasteur avec fond céleste harmonisé au design du site"
+          aria-label="Portrait 8K du pasteur sur fond céleste harmonisé au design du site"
         />
       </motion.div>
       
