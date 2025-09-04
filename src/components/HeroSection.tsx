@@ -71,7 +71,7 @@ export default function HeroSection() {
         <div className="clouds"></div>
       </motion.div>
       
-      {/* Parallax Pastor Image with multiple layers - Updated with your pastor on celestial background */}
+      {/* Parallax Pastor Image with multiple layers - Updated with your uploaded pastor on celestial background */}
       <motion.div
         className="absolute inset-0"
         style={{ y: backgroundYSpring, scale: useTransform(scrollYProgress, [0, 1], [1.1, 1.3]) }}
@@ -79,53 +79,56 @@ export default function HeroSection() {
         <div
           className="absolute inset-0 bg-cover bg-center bg-no-repeat"
           style={{
-            backgroundImage: "url('https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/object/public/project-uploads/f295b977-6afb-40e7-ac5c-8f643cd4748d/generated_images/ultra-high-resolution-8k-photorealistic--631a0f50-20250904093715.jpg')",
+            backgroundImage: "url('https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/object/public/project-uploads/f295b977-6afb-40e7-ac5c-8f643cd4748d/generated_images/ultra-high-resolution-8k-photorealistic--a868a37d-20250904132117.jpg')",
           }}
           role="img"
-          aria-label="Portrait 8K du pasteur sur fond céleste harmonisé au design du site"
+          aria-label="Portrait 8K du pasteur sur fond céleste avec nuages harmonisé au design du site"
         />
       </motion.div>
       
       {/* Dynamic gradient overlays - Reduced to let celestial background show through */}
       <motion.div 
-        className="absolute inset-0 bg-gradient-to-b from-indigo-900/40 via-purple-900/30 to-slate-900/50" 
+        className="absolute inset-0 bg-gradient-to-b from-indigo-900/30 via-purple-900/20 to-slate-900/40" 
         style={{ opacity: overlayOpacity }}
       />
       <motion.div 
-        className="absolute inset-0 bg-gradient-to-r from-transparent via-black/20 to-transparent"
-        style={{ opacity: useTransform(scrollYProgress, [0, 1], [0.1, 0.4]) }}
+        className="absolute inset-0 bg-gradient-to-r from-transparent via-black/15 to-transparent"
+        style={{ opacity: useTransform(scrollYProgress, [0, 1], [0.05, 0.3]) }}
       />
       
       {/* Enhanced Floating Light Particles - Updated for celestial theme */}
       <div className="absolute inset-0 overflow-hidden">
         <div className="floating-particles">
-          {[...Array(30)].map((_, i) => (
+          {[...Array(35)].map((_, i) => (
             <motion.div 
               key={i}
               className="particle celestial-particle"
               initial={{ opacity: 0, scale: 0 }}
               animate={{ 
-                opacity: [0, 0.8, 0],
-                scale: [0, 1.5, 0],
-                y: [typeof window !== 'undefined' ? window.innerHeight : 1000, -100],
-                x: [0, Math.sin(i) * 150]
+                opacity: [0, 0.9, 0],
+                scale: [0, 1.8, 0],
+                y: [typeof window !== 'undefined' ? window.innerHeight : 1000, -120],
+                x: [0, Math.sin(i) * 180]
               }}
               transition={{
-                duration: 12 + Math.random() * 8,
+                duration: 14 + Math.random() * 10,
                 repeat: Infinity,
-                delay: Math.random() * 15,
+                delay: Math.random() * 20,
                 ease: "linear"
               }}
               style={{
                 left: `${Math.random() * 100}%`,
-                background: i % 3 === 0 ? 'radial-gradient(circle, #ffd700 0%, transparent 70%)' :
-                           i % 3 === 1 ? 'radial-gradient(circle, #87ceeb 0%, transparent 70%)' :
-                           'radial-gradient(circle, #f0f8ff 0%, transparent 70%)',
-                width: `${2 + Math.random() * 4}px`,
-                height: `${2 + Math.random() * 4}px`,
+                background: i % 4 === 0 ? 'radial-gradient(circle, #ffd700 0%, transparent 70%)' :
+                           i % 4 === 1 ? 'radial-gradient(circle, #87ceeb 0%, transparent 70%)' :
+                           i % 4 === 2 ? 'radial-gradient(circle, #f0f8ff 0%, transparent 70%)' :
+                           'radial-gradient(circle, #e6e6fa 0%, transparent 70%)',
+                width: `${3 + Math.random() * 5}px`,
+                height: `${3 + Math.random() * 5}px`,
                 borderRadius: '50%',
-                filter: 'blur(0.5px)',
-                boxShadow: '0 0 10px rgba(255, 215, 0, 0.3)'
+                filter: 'blur(0.8px)',
+                boxShadow: i % 3 === 0 ? '0 0 15px rgba(255, 215, 0, 0.4)' :
+                          i % 3 === 1 ? '0 0 12px rgba(135, 206, 235, 0.3)' :
+                          '0 0 10px rgba(240, 248, 255, 0.2)'
               }}
             />
           ))}
