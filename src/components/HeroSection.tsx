@@ -67,22 +67,49 @@ export default function HeroSection() {
         style={{ y: backgroundYSpring }}
       >
         <div
-          className="absolute inset-0"
-          style={{
-            background:
-              "linear-gradient(135deg, rgba(15,23,42,0.95) 0%, rgba(76,29,149,0.85) 50%, rgba(49,46,129,0.9) 100%)",
-          }}
+          className="absolute inset-0 bg-gradient-to-br from-slate-900 via-purple-900 to-indigo-900"
         />
-        <div className="stars"></div>
-        <div className="twinkling"></div>
+        <div className="stars opacity-5"></div>
+        <div className="twinkling" style={{ opacity: 0.06 }}></div>
         <div
           className="clouds absolute inset-0"
           style={{
             backgroundImage:
-              "radial-gradient(circle at 20% 30%, rgba(255,255,255,0.10) 0%, rgba(139,92,246,0.12) 22%, rgba(255,255,255,0) 55%), radial-gradient(circle at 70% 40%, rgba(255,255,255,0.08) 0%, rgba(59,130,246,0.10) 20%, rgba(255,255,255,0) 52%), radial-gradient(circle at 40% 70%, rgba(255,255,255,0.08) 0%, rgba(139,92,246,0.10) 18%, rgba(255,255,255,0) 50%)",
+              "radial-gradient(circle at 20% 30%, rgba(255,255,255,0.07) 0%, rgba(139,92,246,0.09) 22%, rgba(255,255,255,0) 55%), radial-gradient(circle at 70% 40%, rgba(255,255,255,0.05) 0%, rgba(49,46,129,0.07) 20%, rgba(255,255,255,0) 52%), radial-gradient(circle at 40% 70%, rgba(255,255,255,0.05) 0%, rgba(139,92,246,0.07) 18%, rgba(255,255,255,0) 50%)",
             filter: "blur(10px)",
-            opacity: 0.28,
+            opacity: 0.08,
+            mixBlendMode: "soft-light",
+          }}
+        />
+        {/* Horizon cloud belt for subtle heaven clouds */}
+        <div
+          className="absolute inset-x-0 bottom-0 h-2/5 pointer-events-none"
+          style={{
+            backgroundImage:
+              "radial-gradient(80% 60% at 50% 100%, rgba(255,255,255,0.10) 0%, rgba(139,92,246,0.08) 30%, rgba(255,255,255,0.0) 70%)",
+            filter: "blur(8px)",
             mixBlendMode: "screen",
+            opacity: 0.14,
+          }}
+        />
+        {/* Central heaven gate crown + soft shafts (harmonized with theme) */}
+        <div
+          className="absolute inset-0 pointer-events-none mix-blend-screen"
+          style={{
+            backgroundImage: [
+              // crown arch at top-center
+              "radial-gradient(70% 55% at 50% 0%, rgba(139,92,246,0.18) 0%, rgba(139,92,246,0.0) 60%)",
+              // inner ring hint
+              "conic-gradient(from 200deg at 50% 0%, rgba(255,255,255,0.06), rgba(255,255,255,0.0) 140deg)",
+              // light shafts left/right
+              "linear-gradient(115deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.0) 35%)",
+              "linear-gradient(245deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.0) 35%)"
+            ].join(', '),
+            backgroundPosition: "50% 0, 50% 0, 0 0, 100% 0",
+            backgroundSize: "120% 70%, 150% 65%, 100% 100%, 100% 100%",
+            backgroundRepeat: "no-repeat",
+            opacity: 0.14,
+            filter: "blur(0.4px)",
           }}
         />
       </motion.div>
@@ -92,6 +119,14 @@ export default function HeroSection() {
         className="absolute inset-0"
         style={{ y: backgroundYSpring, scale: useTransform(scrollYProgress, [0, 1], [1.1, 1.3]) }}
       >
+        {/* subtle halo behind the person for better blend */}
+        <div
+          className="absolute inset-0"
+          style={{
+            background:
+              "radial-gradient(60% 60% at 85% 85%, rgba(2,6,23,0.25) 0%, rgba(2,6,23,0.12) 35%, rgba(2,6,23,0) 70%), radial-gradient(45% 35% at 85% 85%, rgba(139,92,246,0.12) 0%, rgba(139,92,246,0) 70%)",
+          }}
+        />
         <div
           className="absolute inset-0 bg-no-repeat"
           style={{
@@ -101,6 +136,60 @@ export default function HeroSection() {
           }}
           role="img"
           aria-label="Portrait du pasteur de l'église FPVM Franco-Malagasy"
+        />
+        {/* gentle brand tint over subject to harmonize with theme */}
+        <div
+          className="absolute inset-0 pointer-events-none"
+          style={{
+            background:
+              "radial-gradient(55% 55% at 85% 85%, rgba(139,92,246,0.025) 0%, rgba(49,46,129,0.025) 40%, rgba(0,0,0,0) 75%)",
+            mixBlendMode: "soft-light",
+          }}
+        />
+        {/* Heaven Gate light arches and pillars (harmonized with theme) */}
+        <div
+          className="absolute inset-0 pointer-events-none mix-blend-soft-light"
+          style={{
+            backgroundImage: [
+              // Arch glow (outer)
+              "radial-gradient(closest-side at 50% 0%, rgba(139,92,246,0.28), rgba(139,92,246,0.0) 78%)",
+              // Inner arch ring 1
+              "conic-gradient(from 200deg at 50% 0%, rgba(255,255,255,0.07), rgba(255,255,255,0.0) 120deg)",
+              // Inner arch ring 2 (fainter, wider)
+              "conic-gradient(from 210deg at 50% 0%, rgba(139,92,246,0.06), rgba(139,92,246,0.0) 140deg)",
+              // Left pillar
+              "linear-gradient(180deg, rgba(99,102,241,0.14) 0%, rgba(99,102,241,0.0) 68%)",
+              // Right pillar
+              "linear-gradient(180deg, rgba(139,92,246,0.14) 0%, rgba(139,92,246,0.0) 68%)",
+              // Central vertical beam
+              "linear-gradient(180deg, rgba(255,255,255,0.10) 0%, rgba(255,255,255,0.0) 60%)"
+            ].join(', '),
+            backgroundPosition: "50% 0, 50% 0, 50% 0, 20% 0, 80% 0, 50% 0",
+            backgroundSize: "140% 72%, 160% 70%, 180% 65%, 14% 100%, 14% 100%, 8% 100%",
+            backgroundRepeat: "no-repeat",
+            opacity: 0.12,
+            filter: "blur(0.6px)",
+          }}
+        />
+        {/* Gate steps / terrace hint at horizon */}
+        <div
+          className="absolute inset-x-0 bottom-0 h-1/2 pointer-events-none mix-blend-screen"
+          style={{
+            backgroundImage:
+              "radial-gradient(80% 50% at 50% 100%, rgba(255,255,255,0.06) 0%, rgba(139,92,246,0.05) 35%, rgba(255,255,255,0) 70%), repeating-linear-gradient(to top, rgba(255,255,255,0.04) 0, rgba(255,255,255,0.04) 2px, rgba(255,255,255,0) 6px)",
+            filter: "blur(4px)",
+            opacity: 0.12,
+          }}
+        />
+        {/* Soft celestial rays */}
+        <div
+          className="absolute inset-0 pointer-events-none mix-blend-screen"
+          style={{
+            backgroundImage: "linear-gradient(115deg, rgba(255,255,255,0.05) 0%, transparent 40%), linear-gradient(245deg, rgba(255,255,255,0.045) 0%, transparent 45%)",
+            backgroundRepeat: "no-repeat",
+            backgroundSize: "100% 100%",
+            opacity: 0.12,
+          }}
         />
       </motion.div>
       
@@ -113,20 +202,43 @@ export default function HeroSection() {
         className="absolute inset-0 bg-gradient-to-r from-transparent via-purple-500/10 to-transparent"
         style={{ opacity: useTransform(scrollYProgress, [0, 1], [0.05, 0.25]) }}
       />
+      {/* subtle top vignette for focus */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          background:
+            "linear-gradient(to bottom, rgba(2,6,23,0.35) 0%, rgba(2,6,23,0) 30%)",
+        }}
+      />
+      {/* soft brand tint */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          background:
+            "linear-gradient(135deg, rgba(139,92,246,0.03) 0%, rgba(49,46,129,0.03) 100%)",
+        }}
+      />
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          background:
+            "radial-gradient(ellipse at center, rgba(0,0,0,0) 55%, rgba(2,6,23,0.5) 100%)",
+        }}
+      />
       
       {/* Enhanced Floating Light Particles - Updated for celestial theme */}
       <div className="absolute inset-0 overflow-hidden">
         <div className="floating-particles">
-          {[...Array(35)].map((_, i) => (
+          {[...Array(22)].map((_, i) => (
             <motion.div 
               key={i}
               className="particle celestial-particle"
               initial={{ opacity: 0, scale: 0 }}
               animate={{ 
-                opacity: [0, 0.7, 0],
-                scale: [0, 1.6, 0],
+                opacity: [0, 0.3, 0],
+                scale: [0, 1.3, 0],
                 y: [typeof window !== 'undefined' ? window.innerHeight : 1000, -120],
-                x: [0, Math.sin(i) * 160]
+                x: [0, Math.sin(i) * 120]
               }}
               transition={{
                 duration: 16 + Math.random() * 10,
@@ -136,16 +248,16 @@ export default function HeroSection() {
               }}
               style={{
                 left: `${Math.random() * 100}%`,
-                background: i % 3 === 0 ? 'radial-gradient(circle, rgba(139,92,246,0.7) 0%, transparent 70%)' :
-                           i % 3 === 1 ? 'radial-gradient(circle, rgba(59,130,246,0.65) 0%, transparent 70%)' :
-                           'radial-gradient(circle, rgba(255,255,255,0.6) 0%, transparent 70%)',
+                background: i % 2 === 0 
+                  ? 'radial-gradient(circle, rgba(139,92,246,0.4) 0%, transparent 70%)' 
+                  : 'radial-gradient(circle, rgba(255,255,255,0.28) 0%, transparent 70%)',
                 width: `${3 + Math.random() * 5}px`,
                 height: `${3 + Math.random() * 5}px`,
                 borderRadius: '50%',
                 filter: 'blur(0.8px)',
-                boxShadow: i % 3 === 0 ? '0 0 12px rgba(139,92,246,0.28)' :
-                          i % 3 === 1 ? '0 0 10px rgba(59,130,246,0.24)' :
-                          '0 0 8px rgba(255,255,255,0.22)'
+                boxShadow: i % 2 === 0 
+                  ? '0 0 5px rgba(139,92,246,0.16)'
+                  : '0 0 5px rgba(255,255,255,0.10)'
               }}
             />
           ))}
