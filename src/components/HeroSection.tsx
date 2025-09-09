@@ -70,7 +70,7 @@ export default function HeroSection() {
           className="absolute inset-0"
           style={{
             background:
-              "linear-gradient(180deg, rgba(135,206,250,0.7) 0%, rgba(224,231,255,0.8) 40%, rgba(255,255,255,0.9) 85%)",
+              "linear-gradient(135deg, rgba(15,23,42,0.95) 0%, rgba(76,29,149,0.85) 50%, rgba(49,46,129,0.9) 100%)",
           }}
         />
         <div className="stars"></div>
@@ -79,8 +79,10 @@ export default function HeroSection() {
           className="clouds absolute inset-0"
           style={{
             backgroundImage:
-              "radial-gradient(circle at 20% 30%, rgba(255,255,255,0.7) 0%, rgba(255,255,255,0.6) 25%, rgba(255,255,255,0) 60%), radial-gradient(circle at 70% 40%, rgba(255,255,255,0.65) 0%, rgba(255,255,255,0.55) 22%, rgba(255,255,255,0) 58%), radial-gradient(circle at 40% 70%, rgba(255,255,255,0.6) 0%, rgba(255,255,255,0.5) 20%, rgba(255,255,255,0) 55%)",
-            filter: "blur(6px)",
+              "radial-gradient(circle at 20% 30%, rgba(255,255,255,0.10) 0%, rgba(139,92,246,0.12) 22%, rgba(255,255,255,0) 55%), radial-gradient(circle at 70% 40%, rgba(255,255,255,0.08) 0%, rgba(59,130,246,0.10) 20%, rgba(255,255,255,0) 52%), radial-gradient(circle at 40% 70%, rgba(255,255,255,0.08) 0%, rgba(139,92,246,0.10) 18%, rgba(255,255,255,0) 50%)",
+            filter: "blur(10px)",
+            opacity: 0.28,
+            mixBlendMode: "screen",
           }}
         />
       </motion.div>
@@ -104,12 +106,12 @@ export default function HeroSection() {
       
       {/* Dynamic gradient overlays - Reduced to let celestial background show through */}
       <motion.div 
-        className="absolute inset-0 bg-gradient-to-b from-indigo-900/30 via-purple-900/20 to-slate-900/40" 
+        className="absolute inset-0 bg-gradient-to-b from-indigo-900/40 via-purple-900/30 to-slate-900/50" 
         style={{ opacity: overlayOpacity }}
       />
       <motion.div 
-        className="absolute inset-0 bg-gradient-to-r from-transparent via-black/15 to-transparent"
-        style={{ opacity: useTransform(scrollYProgress, [0, 1], [0.05, 0.3]) }}
+        className="absolute inset-0 bg-gradient-to-r from-transparent via-purple-500/10 to-transparent"
+        style={{ opacity: useTransform(scrollYProgress, [0, 1], [0.05, 0.25]) }}
       />
       
       {/* Enhanced Floating Light Particles - Updated for celestial theme */}
@@ -121,30 +123,29 @@ export default function HeroSection() {
               className="particle celestial-particle"
               initial={{ opacity: 0, scale: 0 }}
               animate={{ 
-                opacity: [0, 0.9, 0],
-                scale: [0, 1.8, 0],
+                opacity: [0, 0.7, 0],
+                scale: [0, 1.6, 0],
                 y: [typeof window !== 'undefined' ? window.innerHeight : 1000, -120],
-                x: [0, Math.sin(i) * 180]
+                x: [0, Math.sin(i) * 160]
               }}
               transition={{
-                duration: 14 + Math.random() * 10,
+                duration: 16 + Math.random() * 10,
                 repeat: Infinity,
-                delay: Math.random() * 20,
+                delay: Math.random() * 18,
                 ease: "linear"
               }}
               style={{
                 left: `${Math.random() * 100}%`,
-                background: i % 4 === 0 ? 'radial-gradient(circle, #ffd700 0%, transparent 70%)' :
-                           i % 4 === 1 ? 'radial-gradient(circle, #87ceeb 0%, transparent 70%)' :
-                           i % 4 === 2 ? 'radial-gradient(circle, #f0f8ff 0%, transparent 70%)' :
-                           'radial-gradient(circle, #e6e6fa 0%, transparent 70%)',
+                background: i % 3 === 0 ? 'radial-gradient(circle, rgba(139,92,246,0.7) 0%, transparent 70%)' :
+                           i % 3 === 1 ? 'radial-gradient(circle, rgba(59,130,246,0.65) 0%, transparent 70%)' :
+                           'radial-gradient(circle, rgba(255,255,255,0.6) 0%, transparent 70%)',
                 width: `${3 + Math.random() * 5}px`,
                 height: `${3 + Math.random() * 5}px`,
                 borderRadius: '50%',
                 filter: 'blur(0.8px)',
-                boxShadow: i % 3 === 0 ? '0 0 15px rgba(255, 215, 0, 0.4)' :
-                          i % 3 === 1 ? '0 0 12px rgba(135, 206, 235, 0.3)' :
-                          '0 0 10px rgba(240, 248, 255, 0.2)'
+                boxShadow: i % 3 === 0 ? '0 0 12px rgba(139,92,246,0.28)' :
+                          i % 3 === 1 ? '0 0 10px rgba(59,130,246,0.24)' :
+                          '0 0 8px rgba(255,255,255,0.22)'
               }}
             />
           ))}
