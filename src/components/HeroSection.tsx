@@ -65,6 +65,8 @@ export default function HeroSection() {
       <motion.div 
         className="absolute inset-0 celestial-background"
         style={{ y: backgroundYSpring }}
+        animate={{ scale: [1, 1.03, 1], rotate: [0, 0.2, -0.2, 0] }}
+        transition={{ duration: 40, repeat: Infinity, ease: "easeInOut" }}
       >
         <div
           className="absolute inset-0 bg-gradient-to-br from-slate-900 via-purple-900 to-indigo-900"
@@ -162,15 +164,18 @@ export default function HeroSection() {
               "radial-gradient(60% 60% at 85% 85%, rgba(2,6,23,0.25) 0%, rgba(2,6,23,0.12) 35%, rgba(2,6,23,0) 70%), radial-gradient(45% 35% at 85% 85%, rgba(139,92,246,0.12) 0%, rgba(139,92,246,0) 70%)",
           }}
         />
-        <div
+        <motion.div
           className="absolute inset-0 bg-no-repeat"
           style={{
-            backgroundImage: "url('https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/object/public/document-uploads/1756992161521-fot86zkm14q.png')",
+            backgroundImage: "url('https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/object/public/document-uploads/1757418644289-cp4y23qrvfa.png')",
             backgroundSize: "contain",
             backgroundPosition: "right bottom",
           }}
           role="img"
           aria-label="Portrait du pasteur de l'église FPVM Franco-Malagasy"
+          initial={{ scale: 1.02, y: 0 }}
+          animate={{ scale: [1.02, 1.08, 1.02], y: [0, -10, 0] }}
+          transition={{ duration: 24, repeat: Infinity, ease: "easeInOut" }}
         />
         {/* gentle brand tint over subject to harmonize with theme */}
         <div
