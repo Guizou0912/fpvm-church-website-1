@@ -66,9 +66,23 @@ export default function HeroSection() {
         className="absolute inset-0 celestial-background"
         style={{ y: backgroundYSpring }}
       >
+        <div
+          className="absolute inset-0"
+          style={{
+            background:
+              "linear-gradient(180deg, rgba(135,206,250,0.7) 0%, rgba(224,231,255,0.8) 40%, rgba(255,255,255,0.9) 85%)",
+          }}
+        />
         <div className="stars"></div>
         <div className="twinkling"></div>
-        <div className="clouds"></div>
+        <div
+          className="clouds absolute inset-0"
+          style={{
+            backgroundImage:
+              "radial-gradient(circle at 20% 30%, rgba(255,255,255,0.7) 0%, rgba(255,255,255,0.6) 25%, rgba(255,255,255,0) 60%), radial-gradient(circle at 70% 40%, rgba(255,255,255,0.65) 0%, rgba(255,255,255,0.55) 22%, rgba(255,255,255,0) 58%), radial-gradient(circle at 40% 70%, rgba(255,255,255,0.6) 0%, rgba(255,255,255,0.5) 20%, rgba(255,255,255,0) 55%)",
+            filter: "blur(6px)",
+          }}
+        />
       </motion.div>
       
       {/* Parallax Pastor Image with multiple layers - Updated with your uploaded pastor on celestial background */}
@@ -77,9 +91,11 @@ export default function HeroSection() {
         style={{ y: backgroundYSpring, scale: useTransform(scrollYProgress, [0, 1], [1.1, 1.3]) }}
       >
         <div
-          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+          className="absolute inset-0 bg-no-repeat"
           style={{
             backgroundImage: "url('https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/object/public/document-uploads/1756992161521-fot86zkm14q.png')",
+            backgroundSize: "contain",
+            backgroundPosition: "right bottom",
           }}
           role="img"
           aria-label="Portrait du pasteur de l'église FPVM Franco-Malagasy"
