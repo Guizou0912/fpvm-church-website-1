@@ -75,7 +75,7 @@ export default function HeroSection() {
           className="clouds absolute inset-0"
           style={{
             backgroundImage:
-              "radial-gradient(circle at 20% 30%, rgba(255,255,255,0.07) 0%, rgba(139,92,246,0.09) 22%, rgba(255,255,255,0) 55%), radial-gradient(circle at 70% 40%, rgba(255,255,255,0.05) 0%, rgba(49,46,129,0.07) 20%, rgba(255,255,255,0) 52%), radial-gradient(circle at 40% 70%, rgba(255,255,255,0.05) 0%, rgba(139,92,246,0.07) 18%, rgba(255,255,255,0) 50%)",
+              "radial-gradient(circle at 20% 30%, rgba(255,255,255,0.07) 0%, rgba(139,92,246,0.09) 22%, rgba(255,255,255,0) 55%), radial-gradient(circle at 70% 40%, rgba(255,255,255,0.05) 0%, rgba(49,46,129,0.07) 20%, rgba(255,255,255,0) 52%), radial-gradient(circle at 40% 70%, rgba(255,255,255,0.05) 0%, rgba(139,92,246,0.07) 18%, rgba(255,255,255,0) 50%), radial-gradient(circle at 60% 20%, rgba(250,204,21,0.08) 0%, rgba(250,204,21,0.0) 50%)",
             filter: "blur(12px)",
             opacity: 0.85,
             mixBlendMode: "screen",
@@ -126,6 +126,25 @@ export default function HeroSection() {
             backgroundSize: "100% 100%, 100% 100%",
             opacity: 0.6,
             filter: "blur(0.5px)",
+          }}
+        />
+        {/* Distant heavenly gates silhouette (barely visible) */}
+        <div
+          className="absolute inset-x-0 bottom-0 h-2/5 pointer-events-none mix-blend-soft-light"
+          style={{
+            backgroundImage: [
+              // central gate bars
+              "repeating-linear-gradient(90deg, rgba(255,255,255,0.06) 0 2px, rgba(255,255,255,0.0) 2px 12px)",
+              // warm golden hint
+              "linear-gradient(to top, rgba(250,204,21,0.10), rgba(250,204,21,0.0))",
+              // subtle indigo depth
+              "linear-gradient(to top, rgba(49,46,129,0.12), rgba(49,46,129,0.0))"
+            ].join(', '),
+            backgroundSize: "40% 100%, 100% 100%, 100% 100%",
+            backgroundPosition: "50% 100%, 0 0, 0 0",
+            backgroundRepeat: "no-repeat",
+            opacity: 0.18,
+            filter: "blur(2px)",
           }}
         />
       </motion.div>
@@ -201,10 +220,10 @@ export default function HeroSection() {
         <div
           className="absolute inset-0 pointer-events-none mix-blend-screen"
           style={{
-            backgroundImage: "linear-gradient(115deg, rgba(255,255,255,0.12) 0%, transparent 40%), linear-gradient(245deg, rgba(255,255,255,0.11) 0%, transparent 45%)",
+            backgroundImage: "linear-gradient(to bottom, rgba(250,204,21,0.12) 0%, rgba(250,204,21,0.0) 55%), linear-gradient(115deg, rgba(255,255,255,0.12) 0%, transparent 40%), linear-gradient(245deg, rgba(255,255,255,0.11) 0%, transparent 45%)",
             backgroundRepeat: "no-repeat",
             backgroundSize: "100% 100%",
-            opacity: 0.32,
+            opacity: 0.38,
           }}
         />
       </motion.div>
