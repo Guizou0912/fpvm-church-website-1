@@ -19,7 +19,7 @@ export default function HeroSection() {
   // Parallax transforms with different speeds
   const backgroundY = useTransform(scrollYProgress, [0, 1], ["0%", "50%"]);
   const textY = useTransform(scrollYProgress, [0, 1], ["0%", "200%"]);
-  const overlayOpacity = useTransform(scrollYProgress, [0, 1], [0.6, 0.9]);
+  const overlayOpacity = useTransform(scrollYProgress, [0, 1], [0.0, 0.08]);
   
   // Spring physics for smooth animations
   const springConfig = { stiffness: 100, damping: 30, restDelta: 0.001 };
@@ -76,9 +76,9 @@ export default function HeroSection() {
           style={{
             backgroundImage:
               "radial-gradient(circle at 20% 30%, rgba(255,255,255,0.07) 0%, rgba(139,92,246,0.09) 22%, rgba(255,255,255,0) 55%), radial-gradient(circle at 70% 40%, rgba(255,255,255,0.05) 0%, rgba(49,46,129,0.07) 20%, rgba(255,255,255,0) 52%), radial-gradient(circle at 40% 70%, rgba(255,255,255,0.05) 0%, rgba(139,92,246,0.07) 18%, rgba(255,255,255,0) 50%)",
-            filter: "blur(10px)",
-            opacity: 0.08,
-            mixBlendMode: "soft-light",
+            filter: "blur(12px)",
+            opacity: 0.85,
+            mixBlendMode: "screen",
           }}
         />
         {/* Horizon cloud belt for subtle heaven clouds */}
@@ -89,7 +89,7 @@ export default function HeroSection() {
               "radial-gradient(80% 60% at 50% 100%, rgba(255,255,255,0.10) 0%, rgba(139,92,246,0.08) 30%, rgba(255,255,255,0.0) 70%)",
             filter: "blur(8px)",
             mixBlendMode: "screen",
-            opacity: 0.14,
+            opacity: 0.75,
           }}
         />
         {/* Central heaven gate crown + soft shafts (harmonized with theme) */}
@@ -102,14 +102,30 @@ export default function HeroSection() {
               // inner ring hint
               "conic-gradient(from 200deg at 50% 0%, rgba(255,255,255,0.06), rgba(255,255,255,0.0) 140deg)",
               // light shafts left/right
-              "linear-gradient(115deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.0) 35%)",
-              "linear-gradient(245deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.0) 35%)"
+              "linear-gradient(115deg, rgba(255,255,255,0.16) 0%, rgba(255,255,255,0.0) 35%)",
+              "linear-gradient(245deg, rgba(255,255,255,0.16) 0%, rgba(255,255,255,0.0) 35%)"
             ].join(', '),
             backgroundPosition: "50% 0, 50% 0, 0 0, 100% 0",
             backgroundSize: "120% 70%, 150% 65%, 100% 100%, 100% 100%",
             backgroundRepeat: "no-repeat",
-            opacity: 0.14,
+            opacity: 0.75,
             filter: "blur(0.4px)",
+          }}
+        />
+        {/* Heaven Gate portal (central oval door) */}
+        <div
+          className="absolute inset-0 pointer-events-none mix-blend-screen"
+          style={{
+            backgroundImage: [
+              // vertical oval glow as the celestial gate
+              "radial-gradient(35% 60% at 50% 60%, rgba(255,255,255,0.18) 0%, rgba(139,92,246,0.16) 22%, rgba(139,92,246,0.0) 60%)",
+              // thin inner highlight
+              "radial-gradient(closest-side at 50% 60%, rgba(255,255,255,0.32), rgba(255,255,255,0) 72%)"
+            ].join(', '),
+            backgroundRepeat: "no-repeat",
+            backgroundSize: "100% 100%, 100% 100%",
+            opacity: 0.6,
+            filter: "blur(0.5px)",
           }}
         />
       </motion.div>
@@ -148,26 +164,26 @@ export default function HeroSection() {
         />
         {/* Heaven Gate light arches and pillars (harmonized with theme) */}
         <div
-          className="absolute inset-0 pointer-events-none mix-blend-soft-light"
+          className="absolute inset-0 pointer-events-none mix-blend-screen"
           style={{
             backgroundImage: [
               // Arch glow (outer)
-              "radial-gradient(closest-side at 50% 0%, rgba(139,92,246,0.28), rgba(139,92,246,0.0) 78%)",
+              "radial-gradient(closest-side at 50% 0%, rgba(139,92,246,0.36), rgba(139,92,246,0.0) 78%)",
               // Inner arch ring 1
-              "conic-gradient(from 200deg at 50% 0%, rgba(255,255,255,0.07), rgba(255,255,255,0.0) 120deg)",
+              "conic-gradient(from 200deg at 50% 0%, rgba(255,255,255,0.09), rgba(255,255,255,0.0) 120deg)",
               // Inner arch ring 2 (fainter, wider)
-              "conic-gradient(from 210deg at 50% 0%, rgba(139,92,246,0.06), rgba(139,92,246,0.0) 140deg)",
+              "conic-gradient(from 210deg at 50% 0%, rgba(139,92,246,0.09), rgba(139,92,246,0.0) 140deg)",
               // Left pillar
-              "linear-gradient(180deg, rgba(99,102,241,0.14) 0%, rgba(99,102,241,0.0) 68%)",
+              "linear-gradient(180deg, rgba(99,102,241,0.32) 0%, rgba(99,102,241,0.0) 68%)",
               // Right pillar
-              "linear-gradient(180deg, rgba(139,92,246,0.14) 0%, rgba(139,92,246,0.0) 68%)",
+              "linear-gradient(180deg, rgba(139,92,246,0.32) 0%, rgba(139,92,246,0.0) 68%)",
               // Central vertical beam
-              "linear-gradient(180deg, rgba(255,255,255,0.10) 0%, rgba(255,255,255,0.0) 60%)"
+              "linear-gradient(180deg, rgba(255,255,255,0.28) 0%, rgba(255,255,255,0.0) 60%)"
             ].join(', '),
             backgroundPosition: "50% 0, 50% 0, 50% 0, 20% 0, 80% 0, 50% 0",
             backgroundSize: "140% 72%, 160% 70%, 180% 65%, 14% 100%, 14% 100%, 8% 100%",
             backgroundRepeat: "no-repeat",
-            opacity: 0.12,
+            opacity: 0.55,
             filter: "blur(0.6px)",
           }}
         />
@@ -176,19 +192,19 @@ export default function HeroSection() {
           className="absolute inset-x-0 bottom-0 h-1/2 pointer-events-none mix-blend-screen"
           style={{
             backgroundImage:
-              "radial-gradient(80% 50% at 50% 100%, rgba(255,255,255,0.06) 0%, rgba(139,92,246,0.05) 35%, rgba(255,255,255,0) 70%), repeating-linear-gradient(to top, rgba(255,255,255,0.04) 0, rgba(255,255,255,0.04) 2px, rgba(255,255,255,0) 6px)",
+              "radial-gradient(80% 50% at 50% 100%, rgba(255,255,255,0.10) 0%, rgba(139,92,246,0.09) 35%, rgba(255,255,255,0) 70%), repeating-linear-gradient(to top, rgba(255,255,255,0.08) 0, rgba(255,255,255,0.08) 2px, rgba(255,255,255,0) 6px)",
             filter: "blur(4px)",
-            opacity: 0.12,
+            opacity: 0.4,
           }}
         />
         {/* Soft celestial rays */}
         <div
           className="absolute inset-0 pointer-events-none mix-blend-screen"
           style={{
-            backgroundImage: "linear-gradient(115deg, rgba(255,255,255,0.05) 0%, transparent 40%), linear-gradient(245deg, rgba(255,255,255,0.045) 0%, transparent 45%)",
+            backgroundImage: "linear-gradient(115deg, rgba(255,255,255,0.12) 0%, transparent 40%), linear-gradient(245deg, rgba(255,255,255,0.11) 0%, transparent 45%)",
             backgroundRepeat: "no-repeat",
             backgroundSize: "100% 100%",
-            opacity: 0.12,
+            opacity: 0.32,
           }}
         />
       </motion.div>
@@ -200,14 +216,14 @@ export default function HeroSection() {
       />
       <motion.div 
         className="absolute inset-0 bg-gradient-to-r from-transparent via-purple-500/10 to-transparent"
-        style={{ opacity: useTransform(scrollYProgress, [0, 1], [0.05, 0.25]) }}
+        style={{ opacity: useTransform(scrollYProgress, [0, 1], [0.0, 0.06]) }}
       />
       {/* subtle top vignette for focus */}
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
           background:
-            "linear-gradient(to bottom, rgba(2,6,23,0.35) 0%, rgba(2,6,23,0) 30%)",
+            "linear-gradient(to bottom, rgba(2,6,23,0.10) 0%, rgba(2,6,23,0) 30%)",
         }}
       />
       {/* soft brand tint */}
@@ -216,6 +232,7 @@ export default function HeroSection() {
         style={{
           background:
             "linear-gradient(135deg, rgba(139,92,246,0.03) 0%, rgba(49,46,129,0.03) 100%)",
+          opacity: 0,
         }}
       />
       <div
@@ -223,6 +240,7 @@ export default function HeroSection() {
         style={{
           background:
             "radial-gradient(ellipse at center, rgba(0,0,0,0) 55%, rgba(2,6,23,0.5) 100%)",
+          opacity: 0,
         }}
       />
       
