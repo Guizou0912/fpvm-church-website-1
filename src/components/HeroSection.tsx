@@ -19,7 +19,7 @@ export default function HeroSection() {
   // Parallax transforms with different speeds
   const backgroundY = useTransform(scrollYProgress, [0, 1], ["0%", "50%"]);
   const textY = useTransform(scrollYProgress, [0, 1], ["0%", "200%"]);
-  const overlayOpacity = useTransform(scrollYProgress, [0, 1], [0.0, 0.08]);
+  const overlayOpacity = useTransform(scrollYProgress, [0, 1], [0.05, 0.22]);
   
   // Spring physics for smooth animations
   const springConfig = { stiffness: 100, damping: 30, restDelta: 0.001 };
@@ -59,7 +59,7 @@ export default function HeroSection() {
   return (
     <section 
       ref={containerRef}
-      className="relative min-h-screen w-full overflow-hidden flex items-center justify-center"
+      className="relative h-[100svh] min-h-[100svh] w-screen overflow-hidden flex items-center justify-center"
     >
       {/* Animated Celestial Background with advanced parallax */}
       <motion.div 
@@ -69,8 +69,8 @@ export default function HeroSection() {
         <div
           className="absolute inset-0 bg-gradient-to-br from-slate-900 via-purple-900 to-indigo-900"
         />
-        <div className="stars opacity-5"></div>
-        <div className="twinkling" style={{ opacity: 0.06 }}></div>
+        <div className="stars" style={{ opacity: 0.03 }}></div>
+        <div className="twinkling" style={{ opacity: 0.04 }}></div>
         <div
           className="clouds absolute inset-0"
           style={{
@@ -143,7 +143,7 @@ export default function HeroSection() {
             backgroundSize: "40% 100%, 100% 100%, 100% 100%",
             backgroundPosition: "50% 100%, 0 0, 0 0",
             backgroundRepeat: "no-repeat",
-            opacity: 0.18,
+            opacity: 0.1,
             filter: "blur(2px)",
           }}
         />
@@ -165,9 +165,10 @@ export default function HeroSection() {
         <div
           className="absolute inset-0 bg-no-repeat"
           style={{
-            backgroundImage: "url('https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/object/public/document-uploads/1756992161521-fot86zkm14q.png')",
-            backgroundSize: "contain",
-            backgroundPosition: "right bottom",
+            backgroundImage: "url('https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/object/public/document-uploads/1757524546724-98s63f4qxnk.png')",
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            backgroundAttachment: "fixed",
           }}
           role="img"
           aria-label="Portrait du pasteur de l'église FPVM Franco-Malagasy"
@@ -202,7 +203,7 @@ export default function HeroSection() {
             backgroundPosition: "50% 0, 50% 0, 50% 0, 20% 0, 80% 0, 50% 0",
             backgroundSize: "140% 72%, 160% 70%, 180% 65%, 14% 100%, 14% 100%, 8% 100%",
             backgroundRepeat: "no-repeat",
-            opacity: 0.55,
+            opacity: 0.28,
             filter: "blur(0.6px)",
           }}
         />
@@ -223,7 +224,7 @@ export default function HeroSection() {
             backgroundImage: "linear-gradient(to bottom, rgba(250,204,21,0.12) 0%, rgba(250,204,21,0.0) 55%), linear-gradient(115deg, rgba(255,255,255,0.12) 0%, transparent 40%), linear-gradient(245deg, rgba(255,255,255,0.11) 0%, transparent 45%)",
             backgroundRepeat: "no-repeat",
             backgroundSize: "100% 100%",
-            opacity: 0.38,
+            opacity: 0.22,
           }}
         />
       </motion.div>
@@ -235,7 +236,7 @@ export default function HeroSection() {
       />
       <motion.div 
         className="absolute inset-0 bg-gradient-to-r from-transparent via-purple-500/10 to-transparent"
-        style={{ opacity: useTransform(scrollYProgress, [0, 1], [0.0, 0.06]) }}
+        style={{ opacity: useTransform(scrollYProgress, [0, 1], [0.02, 0.12]) }}
       />
       {/* subtle top vignette for focus */}
       <div
@@ -251,7 +252,7 @@ export default function HeroSection() {
         style={{
           background:
             "linear-gradient(135deg, rgba(139,92,246,0.03) 0%, rgba(49,46,129,0.03) 100%)",
-          opacity: 0,
+          opacity: 0.06,
         }}
       />
       <div
@@ -259,7 +260,15 @@ export default function HeroSection() {
         style={{
           background:
             "radial-gradient(ellipse at center, rgba(0,0,0,0) 55%, rgba(2,6,23,0.5) 100%)",
-          opacity: 0,
+          opacity: 0.35,
+        }}
+      />
+      {/* center scrim to improve text readability */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          background:
+            "radial-gradient(40% 35% at 50% 45%, rgba(2,6,23,0.45) 0%, rgba(2,6,23,0.0) 60%)",
         }}
       />
       
@@ -378,11 +387,11 @@ export default function HeroSection() {
             className="cursor-pointer"
           >
             <motion.div 
-              className="max-w-4xl mx-auto space-y-4 py-8 px-6 backdrop-blur-md bg-white/10 border border-white/20 rounded-2xl shadow-2xl transition-all duration-500"
+              className="max-w-4xl mx-auto space-y-4 py-8 px-6 backdrop-blur-xl bg-slate-950/55 border border-white/15 rounded-2xl shadow-2xl transition-all duration-500"
               whileHover={{ 
-                backgroundColor: "rgba(255,255,255,0.15)",
-                borderColor: "rgba(255,255,255,0.3)",
-                boxShadow: "0 25px 50px -12px rgba(0,0,0,0.25), 0 0 0 1px rgba(255,255,255,0.1)"
+                backgroundColor: "rgba(15,23,42,0.55)",
+                borderColor: "rgba(255,255,255,0.2)",
+                boxShadow: "0 25px 50px -12px rgba(0,0,0,0.35), 0 0 0 1px rgba(255,255,255,0.08)"
               }}
             >
               <motion.p 
@@ -455,7 +464,7 @@ export default function HeroSection() {
                 size="lg"
                 onClick={scrollToConstruction}
                 variant="outline"
-                className="w-full sm:w-auto bg-transparent hover:bg-white/15 text-white border-white/40 hover:border-white/60 transition-all duration-500 px-8 py-4 text-lg font-medium rounded-full backdrop-blur-md shadow-2xl"
+                className="w-full sm:w-auto bg-black/20 hover:bg-white/15 text-white border-white/60 hover:border-white/80 transition-all duration-500 px-8 py-4 text-lg font-medium rounded-full backdrop-blur-md shadow-2xl"
                 aria-label="Faire un don pour soutenir notre projet de construction"
               >
                 <motion.span
@@ -484,7 +493,7 @@ export default function HeroSection() {
       >
         <motion.button
           onClick={scrollToPresentation}
-          className="text-white/70 hover:text-white transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-white/50 focus:ring-offset-2 focus:ring-offset-transparent rounded-full p-4 backdrop-blur-sm bg-white/5 border border-white/20"
+          className="text-white/80 hover:text-white transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-white/50 focus:ring-offset-2 focus:ring-offset-transparent rounded-full p-4 backdrop-blur-md bg-black/30 border border-white/10"
           aria-label="Faire défiler vers le contenu suivant"
           animate={{
             y: [0, 10, 0],
@@ -495,7 +504,7 @@ export default function HeroSection() {
             repeat: Infinity,
             ease: "easeInOut"
           }}
-          whileHover={{ scale: 1.2, backgroundColor: "rgba(255,255,255,0.1)" }}
+          whileHover={{ scale: 1.2, backgroundColor: "rgba(0,0,0,0.45)" }}
         >
           <ChevronDown className="h-6 w-6" />
         </motion.button>
