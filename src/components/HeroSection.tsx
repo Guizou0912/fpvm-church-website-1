@@ -16,15 +16,51 @@ export default function HeroSection() {
     offset: ["start start", "end start"]
   });
 
-  // Parallax transforms with different speeds
-  const backgroundY = useTransform(scrollYProgress, [0, 1], ["0%", "50%"]);
-  const textY = useTransform(scrollYProgress, [0, 1], ["0%", "200%"]);
+  // Parallax transforms avec vitesses plus marquées (type Slider Revolution)
+  const backgroundY = useTransform(scrollYProgress, [0, 1], [0, 80]);
+  const textY = useTransform(scrollYProgress, [0, 1], [0, 420]);
   const overlayOpacity = useTransform(scrollYProgress, [0, 1], [0.05, 0.22]);
   
-  // Spring physics for smooth animations
-  const springConfig = { stiffness: 100, damping: 30, restDelta: 0.001 };
+  // Spring physics
+  const springConfig = { stiffness: 80, damping: 40, restDelta: 0.001 };
   const backgroundYSpring = useSpring(backgroundY, springConfig);
   const textYSpring = useSpring(textY, springConfig);
+
+  // Mouse parallax (profondeur multi-couches)
+  const mx = useSpring(0, { stiffness: 120, damping: 20 });
+  const my = useSpring(0, { stiffness: 120, damping: 20 });
+  const bgMouseX = useTransform(mx, (v) => v * -20);
+  const fgMouseX = useTransform(mx, (v) => v * -10);
+  const textMouseX = useTransform(mx, (v) => v * 6);
+  const bgMouseY = useTransform(my, (v) => v * -10);
+  const fgMouseY = useTransform(my, (v) => v * -6);
+  const textMouseY = useTransform(my, (v) => v * 4);
+  const bgY = useTransform([backgroundYSpring, bgMouseY], ([a, b]) => a + b);
+  const fgY = useTransform([backgroundYSpring, fgMouseY], ([a, b]) => a + b);
+  const textParallaxY = useTransform([textYSpring, textMouseY], ([a, b]) => a + b);
+  // 3D tilt pour effet Slider Revolution
+  const rotateY = useTransform(mx, (v) => v * 4);
+  const rotateX = useTransform(my, (v) => v * -4);
+  // Effets de texte au scroll
+  const textOpacityMotion = useTransform(scrollYProgress, [0, 0.6, 1], [1, 0.85, 0.6]);
+  const textScaleMotion = useTransform(scrollYProgress, [0, 1], [1.02, 0.96]);
+  const textBlur = useTransform(scrollYProgress, [0, 1], ["0px", "2px"]);
+  
+  // Parallax façon snippet: translation + zoom de l'image principale
+  const imgParallaxY = useTransform(scrollYProgress, [0, 1], [0, 300]);
+  const imgScale = useTransform(scrollYProgress, [0, 1], [1, 1.12]);
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    const rect = (e.currentTarget as HTMLDivElement).getBoundingClientRect();
+    const cx = rect.left + rect.width / 2;
+    const cy = rect.top + rect.height / 2;
+    const nx = (e.clientX - cx) / (rect.width / 2); // -1..1
+    const ny = (e.clientY - cy) / (rect.height / 2); // -1..1 (réservé si besoin)
+    // Eviter l'effet sur mobile/touch
+    if (window.matchMedia && !window.matchMedia('(pointer: fine)').matches) return;
+    mx.set(Math.max(-1, Math.min(1, nx)));
+    my.set(Math.max(-1, Math.min(1, ny)));
+  };
 
   const [ref, inView] = useInView({
     threshold: 0.1,
@@ -60,91 +96,23 @@ export default function HeroSection() {
     <section 
       ref={containerRef}
       className="relative h-[100svh] min-h-[100svh] w-screen overflow-hidden flex items-center justify-center"
+      onMouseMove={handleMouseMove}
+      style={{ perspective: 1000, transformStyle: "preserve-3d" }}
     >
       {/* Animated Celestial Background with advanced parallax */}
       <motion.div 
         className="absolute inset-0 celestial-background"
-        style={{ y: backgroundYSpring }}
+        style={{ willChange: "transform" }}
+        animate={{ scale: [1.02, 1.08] }}
+        transition={{ duration: 18, repeat: Infinity, repeatType: "reverse", ease: "easeInOut" }}
       >
+        {/* Fixed background image (as requested) */}
         <div
-          className="absolute inset-0 bg-gradient-to-br from-slate-900 via-purple-900 to-indigo-900"
-        />
-        <div className="stars" style={{ opacity: 0.03 }}></div>
-        <div className="twinkling" style={{ opacity: 0.04 }}></div>
-        <div
-          className="clouds absolute inset-0"
+          className="absolute inset-0 bg-center bg-cover"
           style={{
             backgroundImage:
-              "radial-gradient(circle at 20% 30%, rgba(255,255,255,0.07) 0%, rgba(139,92,246,0.09) 22%, rgba(255,255,255,0) 55%), radial-gradient(circle at 70% 40%, rgba(255,255,255,0.05) 0%, rgba(49,46,129,0.07) 20%, rgba(255,255,255,0) 52%), radial-gradient(circle at 40% 70%, rgba(255,255,255,0.05) 0%, rgba(139,92,246,0.07) 18%, rgba(255,255,255,0) 50%), radial-gradient(circle at 60% 20%, rgba(250,204,21,0.08) 0%, rgba(250,204,21,0.0) 50%)",
-            filter: "blur(12px)",
-            opacity: 0.85,
-            mixBlendMode: "screen",
-          }}
-        />
-        {/* Horizon cloud belt for subtle heaven clouds */}
-        <div
-          className="absolute inset-x-0 bottom-0 h-2/5 pointer-events-none"
-          style={{
-            backgroundImage:
-              "radial-gradient(80% 60% at 50% 100%, rgba(255,255,255,0.10) 0%, rgba(139,92,246,0.08) 30%, rgba(255,255,255,0.0) 70%)",
-            filter: "blur(8px)",
-            mixBlendMode: "screen",
-            opacity: 0.75,
-          }}
-        />
-        {/* Central heaven gate crown + soft shafts (harmonized with theme) */}
-        <div
-          className="absolute inset-0 pointer-events-none mix-blend-screen"
-          style={{
-            backgroundImage: [
-              // crown arch at top-center
-              "radial-gradient(70% 55% at 50% 0%, rgba(139,92,246,0.18) 0%, rgba(139,92,246,0.0) 60%)",
-              // inner ring hint
-              "conic-gradient(from 200deg at 50% 0%, rgba(255,255,255,0.06), rgba(255,255,255,0.0) 140deg)",
-              // light shafts left/right
-              "linear-gradient(115deg, rgba(255,255,255,0.16) 0%, rgba(255,255,255,0.0) 35%)",
-              "linear-gradient(245deg, rgba(255,255,255,0.16) 0%, rgba(255,255,255,0.0) 35%)"
-            ].join(', '),
-            backgroundPosition: "50% 0, 50% 0, 0 0, 100% 0",
-            backgroundSize: "120% 70%, 150% 65%, 100% 100%, 100% 100%",
-            backgroundRepeat: "no-repeat",
-            opacity: 0.75,
-            filter: "blur(0.4px)",
-          }}
-        />
-        {/* Heaven Gate portal (central oval door) */}
-        <div
-          className="absolute inset-0 pointer-events-none mix-blend-screen"
-          style={{
-            backgroundImage: [
-              // vertical oval glow as the celestial gate
-              "radial-gradient(35% 60% at 50% 60%, rgba(255,255,255,0.18) 0%, rgba(139,92,246,0.16) 22%, rgba(139,92,246,0.0) 60%)",
-              // thin inner highlight
-              "radial-gradient(closest-side at 50% 60%, rgba(255,255,255,0.32), rgba(255,255,255,0) 72%)"
-            ].join(', '),
-            backgroundRepeat: "no-repeat",
-            backgroundSize: "100% 100%, 100% 100%",
-            opacity: 0.6,
-            filter: "blur(0.5px)",
-          }}
-        />
-        {/* Distant heavenly gates silhouette (barely visible) */}
-        <div
-          className="absolute inset-x-0 bottom-0 h-2/5 pointer-events-none mix-blend-soft-light"
-          style={{
-            backgroundImage: [
-              // central gate bars
-              "repeating-linear-gradient(90deg, rgba(255,255,255,0.06) 0 2px, rgba(255,255,255,0.0) 2px 12px)",
-              // warm golden hint
-              "linear-gradient(to top, rgba(250,204,21,0.10), rgba(250,204,21,0.0))",
-              // subtle indigo depth
-              "linear-gradient(to top, rgba(49,46,129,0.12), rgba(49,46,129,0.0))"
-            ].join(', '),
-            backgroundSize: "40% 100%, 100% 100%, 100% 100%",
-            backgroundPosition: "50% 100%, 0 0, 0 0",
-            backgroundRepeat: "no-repeat",
-            opacity: 0.1,
-            filter: "blur(2px)",
+              "url('https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/object/public/document-uploads/1757526995673-4wvh272fb6s.png')",
+            backgroundAttachment: "fixed",
           }}
         />
       </motion.div>
@@ -152,7 +120,7 @@ export default function HeroSection() {
       {/* Parallax Pastor Image with multiple layers - Updated with your uploaded pastor on celestial background */}
       <motion.div
         className="absolute inset-0"
-        style={{ y: backgroundYSpring, scale: useTransform(scrollYProgress, [0, 1], [1.1, 1.3]) }}
+        style={{ y: imgParallaxY, scale: imgScale }}
       >
         {/* subtle halo behind the person for better blend */}
         <div
@@ -165,10 +133,10 @@ export default function HeroSection() {
         <div
           className="absolute inset-0 bg-no-repeat"
           style={{
-            backgroundImage: "url('https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/object/public/document-uploads/1757524546724-98s63f4qxnk.png')",
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-            backgroundAttachment: "fixed",
+            backgroundImage: "url('https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/object/public/document-uploads/1757526998775-tru8yvmlkl7.png')",
+            backgroundSize: "contain",
+            backgroundPosition: "bottom right",
+            backgroundRepeat: "no-repeat",
           }}
           role="img"
           aria-label="Portrait du pasteur de l'église FPVM Franco-Malagasy"
@@ -314,7 +282,7 @@ export default function HeroSection() {
       <motion.div 
         ref={ref}
         className="relative z-10 flex items-center justify-center p-6 sm:p-8 lg:p-12 w-full"
-        style={{ y: textYSpring }}
+        style={{ y: textParallaxY, x: textMouseX, rotateX, rotateY, opacity: textOpacityMotion, scale: textScaleMotion, willChange: "transform, opacity, filter", filter: textBlur }}
       >
         <div className="max-w-5xl mx-auto text-center space-y-8 sm:space-y-12">
           {/* Main Title with staggered animations */}
@@ -327,7 +295,7 @@ export default function HeroSection() {
               role="heading"
               aria-level={1}
             >
-              Bienvenue
+              Bienvenue à la FPVM Franco-Malagasy
             </motion.h1>
             
             <motion.div 
@@ -337,7 +305,7 @@ export default function HeroSection() {
               transition={{ duration: 1.2, delay: 0.6, ease: "easeOut" }}
             >
               <motion.h2 
-                className="text-xl sm:text-2xl lg:text-3xl text-white/95 font-heading tracking-wide drop-shadow-lg"
+                className="text-xl sm:text-2xl lg:text-3xl text-white/95 font-heading italic tracking-wide drop-shadow-lg"
                 animate={inView ? {
                   scale: [1, 1.05, 1],
                   textShadow: [
@@ -348,87 +316,19 @@ export default function HeroSection() {
                 } : {}}
                 transition={{ duration: 3, repeat: Infinity, repeatType: "reverse" }}
               >
-                FPVM Franco-Malagasy
+                Teny Fiainana Andalamahitsy
               </motion.h2>
-              <motion.h3 
-                className="text-lg sm:text-xl lg:text-2xl text-white/85 font-light drop-shadow-lg"
+              {/* Optional mission line */}
+              <motion.p 
+                className="text-base sm:text-lg lg:text-xl text-white/90 font-light drop-shadow"
                 initial={{ opacity: 0 }}
                 animate={isLoaded ? { opacity: 1 } : {}}
                 transition={{ duration: 1, delay: 0.8 }}
               >
-                Teny Fiainana Analamahitsy
-              </motion.h3>
+                Une communauté vivante, enracinée dans la Parole de Dieu.
+              </motion.p>
             </motion.div>
           </div>
-          
-          {/* Subtitle with typing animation effect */}
-          <motion.p 
-            className="text-lg sm:text-xl lg:text-2xl text-white/95 max-w-3xl mx-auto font-light leading-relaxed drop-shadow-lg"
-            initial={{ opacity: 0, y: 20 }}
-            animate={isLoaded ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 1.2, delay: 0.9, ease: "easeOut" }}
-          >
-            Nouvelle Église Protestante de Madagascar<br />
-            <motion.em 
-              className="text-white/80"
-              animate={inView ? { opacity: [0.8, 1, 0.8] } : {}}
-              transition={{ duration: 2, repeat: Infinity }}
-            >
-              Fiangonana Protestanta Vaovao eto Madagasikara
-            </motion.em>
-          </motion.p>
-          
-          {/* Church Slogan with advanced animations */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={isLoaded ? { opacity: 1, scale: 1 } : {}}
-            transition={{ duration: 1.2, delay: 1.2, ease: "easeOut" }}
-            whileHover={{ scale: 1.02 }}
-            className="cursor-pointer"
-          >
-            <motion.div 
-              className="max-w-4xl mx-auto space-y-4 py-8 px-6 backdrop-blur-xl bg-slate-950/55 border border-white/15 rounded-2xl shadow-2xl transition-all duration-500"
-              whileHover={{ 
-                backgroundColor: "rgba(15,23,42,0.55)",
-                borderColor: "rgba(255,255,255,0.2)",
-                boxShadow: "0 25px 50px -12px rgba(0,0,0,0.35), 0 0 0 1px rgba(255,255,255,0.08)"
-              }}
-            >
-              <motion.p 
-                className="text-lg sm:text-xl lg:text-2xl text-white font-light italic leading-relaxed drop-shadow-lg"
-                animate={inView ? {
-                  textShadow: [
-                    "0 2px 4px rgba(0,0,0,0.4)",
-                    "0 4px 8px rgba(59,130,246,0.3)",
-                    "0 2px 4px rgba(0,0,0,0.4)"
-                  ]
-                } : {}}
-                transition={{ duration: 4, repeat: Infinity, repeatType: "reverse" }}
-              >
-                "Tamin'ny voalohany ny Teny, ary ny Teny tao amin'Andriamanitra,<br />
-                ary ny Teny dia Andriamanitra"
-              </motion.p>
-              <motion.p 
-                className="text-base sm:text-lg lg:text-xl text-white/90 font-light italic drop-shadow-lg"
-                initial={{ opacity: 0.9 }}
-                animate={inView ? { opacity: [0.9, 1, 0.9] } : {}}
-                transition={{ duration: 3, repeat: Infinity, delay: 1 }}
-              >
-                "Au commencement était la Parole, et la Parole était avec Dieu,<br />
-                et la Parole était Dieu."
-              </motion.p>
-              <motion.p 
-                className="text-sm sm:text-base text-white/70 not-italic font-medium tracking-wider drop-shadow-lg"
-                animate={inView ? { 
-                  letterSpacing: ["0.1em", "0.15em", "0.1em"],
-                  opacity: [0.7, 1, 0.7]
-                } : {}}
-                transition={{ duration: 5, repeat: Infinity }}
-              >
-                JAONA 1:1
-              </motion.p>
-            </motion.div>
-          </motion.div>
           
           {/* Call to Action Buttons with advanced hover effects */}
           <motion.div 
@@ -444,7 +344,7 @@ export default function HeroSection() {
               <Button
                 size="lg"
                 onClick={scrollToPresentation}
-                className="w-full sm:w-auto bg-white/95 hover:bg-white text-slate-900 border-0 transition-all duration-500 px-8 py-4 text-lg font-medium rounded-full shadow-2xl hover:shadow-white/30"
+                className="w-full sm:w-auto bg-gradient-to-r from-blue-600 to-violet-600 hover:from-blue-500 hover:to-violet-500 text-white border-0 transition-all duration-500 px-8 py-4 text-lg font-medium rounded-full shadow-2xl hover:shadow-violet-500/30"
                 aria-label="Découvrir notre église et nos services"
               >
                 <motion.span
@@ -464,12 +364,12 @@ export default function HeroSection() {
                 size="lg"
                 onClick={scrollToConstruction}
                 variant="outline"
-                className="w-full sm:w-auto bg-black/20 hover:bg-white/15 text-white border-white/60 hover:border-white/80 transition-all duration-500 px-8 py-4 text-lg font-medium rounded-full backdrop-blur-md shadow-2xl"
+                className="w-full sm:w-auto bg-white text-violet-700 hover:bg-white border-2 border-violet-500 hover:border-violet-600 transition-all duration-500 px-8 py-4 text-lg font-medium rounded-full shadow-2xl"
                 aria-label="Faire un don pour soutenir notre projet de construction"
               >
                 <motion.span
                   animate={inView ? { 
-                    color: ["rgba(255,255,255,1)", "rgba(139,92,246,1)", "rgba(255,255,255,1)"]
+                    color: ["#6d28d9", "#2563eb", "#6d28d9"]
                   } : {}}
                   transition={{ duration: 3, repeat: Infinity }}
                 >

@@ -7,6 +7,7 @@ import GalleryGrid from '@/components/GalleryGrid';
 import ContactForm from '@/components/ContactForm';
 import { FloatingDonateButton } from '@/components/FloatingDonateButton';
 import Footer from '@/components/Footer';
+import VerseSection from '@/components/VerseSection';
 
 export default function HomePage() {
   return (
@@ -19,6 +20,11 @@ export default function HomePage() {
         {/* Hero Section - Full viewport */}
         <div id="accueil" className="relative">
           <HeroSection />
+        </div>
+
+        {/* Verse + Intro block directly under hero */}
+        <div className="relative z-10">
+          <VerseSection />
         </div>
         
         {/* Parallax Container for all sections */}
