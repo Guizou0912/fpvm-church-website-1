@@ -216,7 +216,7 @@ export default function ChurchPresentation({ className = "" }: ChurchPresentatio
                 <div className="space-y-6 text-lg md:text-xl text-white/90 leading-relaxed">
                   {[
                     "Fondée en 2018, notre église a commencé son ministère avec seulement 10 familles unies par la foi et la vision commune de servir Dieu.",
-                    "En 2023, nous avons rejoint officiellement la paroisse FPVM (Fiangonana Protestanta eto Madagasikara), marquant une étape importante de notre développement spirituel.",
+                    "En 2023, nous avons rejoint officiellement la paroisse FPVM (Fiangonana Protestanta Vaovao eto Madagasikara), marquant une étape importante de notre développement spirituel.",
                     "Aujourd'hui, notre communauté a grandi pour accueillir près de 300 membres, témoignant de la grâce de Dieu et de l'engagement de chacun."
                   ].map((text, index) => (
                     <motion.p
